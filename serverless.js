@@ -119,7 +119,7 @@ class Website extends Component {
 
 		this.state.bucketName = inputs.bucketName
 		this.state.region = inputs.region
-		this.state.url = `https://${inputs.bucketName}.cos.${inputs.region}.myqcloud.com`
+		this.state.url = `https://${inputs.bucketName}.cos-website.${inputs.region}.myqcloud.com`
 		await this.save()
 
 		const outputs = {
