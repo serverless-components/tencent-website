@@ -63,10 +63,29 @@ myWebsite:
       root: ./ # The root folder of your website project.  Defaults to current working directory
       src: ./src # The folder to be uploaded containing your built artifact
       hook: npm run build # A hook to build/test/do anything to your code before uploading
+      # index: index.html # default index.html
+      error: index.html # default error.html
     region: ap-guangzhou # The Tencent region to deploy your website into
     bucketName: myBucket
     env: # Environment variables to include in a 'env.js' file with your uploaded code.
       API_URL: https://api.com
+    cors:
+      - allowedOrigins:
+          - '*.tencent.com'
+          - '*.qcloud.com'
+        allowedMethods:
+          - PUT
+          - POST
+          - DELETE
+          - HEAD
+        allowedHeaders: '*'
+        maxAgeSeconds: 0
+      - allowedOrigins:
+          - '*'
+        allowedMethods:
+          - GET
+        allowedHeaders: '*'
+        maxAgeSeconds: 0
 ```
 
 ### 4. Deploy
