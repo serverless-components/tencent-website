@@ -70,10 +70,10 @@ myWebsite:
   inputs:
     code:
       root: ./ 
-      src: ./src # 代码上传的目录位置
+      src: ./code # 代码上传的目录位置
       hook: npm run build # 上传之前执行的脚本，用于打包/测试代码（可选）
     region: ap-guangzhou # 部署website应用的对应地域
-    bucketName: myBucket
+    bucketName: mybucket # COS bucket当前不支持大写字母命名
     env: # 环境变量，会被上传到 'env.js' 文件中
       API_URL: https://api.com
 ```
