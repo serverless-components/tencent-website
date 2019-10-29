@@ -1,3 +1,7 @@
+[![Serverless Website Tencent Cloud](https://s3.amazonaws.com/assets.github.serverless/github_readme_serverless_website_tencent.png)](http://serverless.com)
+
+&nbsp;
+
 # 腾讯云静态网站应用
 
 ## 简介
@@ -46,6 +50,11 @@ $ cd my-website
 
 在 `.env` 文件中配置腾讯云的APPID，SecretId和SecretKey信息并保存
 
+如果没有腾讯云账号，可以在此[注册新账号](https://cloud.tencent.com/register)。
+
+如果已有腾讯云账号，可以在[API密钥管理
+](https://console.cloud.tencent.com/cam/capi)中获取`APPID`, `SecretId` 和`SecretKey`.
+
 ```
 # .env
 TENCENT_SECRET_ID=123
@@ -54,6 +63,8 @@ TENCENT_APP_ID=123
 ```
 
 * `code`目录下应该对应html/css/js资源的文件，或者一个完整的React应用
+
+示例html[下载地址](https://tinatest-1251971143.cos.ap-beijing.myqcloud.com/index.html)
 
 ### 3. 配置
 
