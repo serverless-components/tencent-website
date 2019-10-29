@@ -7,10 +7,8 @@
 ## 简介
 
 静态网站应用调用了基础的腾讯云COS组件，可以快速部署静态网站页面到对象存储COS中，并生成域名供访问。
-* 该应用中使用了新的[COS_SDK](https://github.com/tencentyun/cos-nodejs-sdk-v5/tree/newSDK)
 
 ## 快速开始
-&nbsp;
 
 操作步骤如下：
 
