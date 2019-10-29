@@ -96,7 +96,7 @@ $ serverless --debug
 
 ### 5. 移除
 
-通过以下命令移除部署的API网关
+通过以下命令移除项目
 ```console
 $ serverless remove --debug
 ```
