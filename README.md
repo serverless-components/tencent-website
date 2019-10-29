@@ -39,6 +39,10 @@ the directory should look something like this:
 
 ```
 
+If you don't have a Tencent Cloud account, you could [sign up](https://intl.cloud.tencent.com/register) first.  
+
+If you already login in, find  `TENCENT_SECRET_ID` and `TENCENT_SECRET_KEY`  in [Tencent Console](https://console.cloud.tencent.com/cam/capi).
+
 ```
 # .env
 TENCENT_SECRET_ID=123
