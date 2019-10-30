@@ -68,6 +68,7 @@ TENCENT_APP_ID=123
 
 在serverless.yml中进行如下配置
 
+
 ```yml
 # serverless.yml
 
@@ -78,13 +79,32 @@ myWebsite:
   component: "@serverless/tencent-website"
   inputs:
     code:
-      root: ./ 
-      src: ./code # 代码上传的目录位置
-      hook: npm run build # 上传之前执行的脚本，用于打包/测试代码（可选）
+      root: ./ # website项目的根目录，默认是当前工作目录
+      src: ./code #  代码上传的目录位置
+      # hook: npm run build # 上传之前执行的脚本，用于打包/测试代码（可选）
+      # index: index.html # 默认 index.html页面
+      error: index.html # 默认 error.html页面
     region: ap-guangzhou # 部署website应用的对应地域
-    bucketName: mybucket # COS bucket当前不支持大写字母命名
-    env: # 环境变量，会被上传到 'env.js' 文件中
+    bucketName: mybucket  # COS bucket当前不支持大写字母命名
+    env: # 环境变量，会被填入到 'env.js' 文件中并上传
       API_URL: https://api.com
+    cors:
+      - allowedOrigins:
+          - '*.tencent.com'
+          - '*.qcloud.com'
+        allowedMethods:
+          - PUT
+          - POST
+          - DELETE
+          - HEAD
+        allowedHeaders: '*'
+        maxAgeSeconds: 0
+      - allowedOrigins:
+          - '*'
+        allowedMethods:
+          - GET
+        allowedHeaders: '*'
+        maxAgeSeconds: 0
 ```
 
 ### 4. 部署
