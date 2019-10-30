@@ -64,7 +64,7 @@ myWebsite:
     code:
       root: ./ # The root folder of your website project.  Defaults to current working directory
       src: ./code # The folder to be uploaded containing your built artifact
-      hook: npm run build # Optional - A hook to build/test/do anything to your code before uploading
+      # hook: npm run build # Optional - A hook to build/test/do anything to your code before uploading
       # index: index.html # default index.html
       error: index.html # default error.html
     region: ap-guangzhou # The Tencent region to deploy your website into
