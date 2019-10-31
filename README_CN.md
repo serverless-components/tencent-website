@@ -64,6 +64,21 @@ TENCENT_APP_ID=123
 
 示例html[下载地址](https://tinatest-1251971143.cos.ap-beijing.myqcloud.com/index.html)
 
+该例子，也可以将以下代码放入到index.html文件中：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello, Tencent Cloud</title>
+</head>
+<body>
+Hello, Tencent Cloud
+</body>
+</html>
+
+
 ### 3. 配置
 
 在serverless.yml中进行如下配置
