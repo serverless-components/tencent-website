@@ -2,9 +2,7 @@
 
 &nbsp;
 
-Deploy a static website to Tencent COS in seconds using [Serverless Components](https://github.com/serverless/components).
-
-* new COS_SDK : https://github.com/tencentyun/cos-nodejs-sdk-v5/tree/newSDK
+Leverage this Serverless Component to deploy a website hosted on serverless infrastructure on Tencent within seconds.  Easily add in your Vue.js, React.js or static assets and more.
 
 &nbsp;
 
