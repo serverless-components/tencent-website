@@ -48,7 +48,8 @@ class Website extends Component {
 
     const cos = new COS({
       SecretId: this.context.credentials.tencent.SecretId,
-      SecretKey: this.context.credentials.tencent.SecretKey
+      SecretKey: this.context.credentials.tencent.SecretKey,
+      UserAgent: 'ServerlessComponent'
     })
 
     this.context.debug(`Configuring bucket ${inputs.bucketName} for website hosting.`)
