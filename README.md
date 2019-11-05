@@ -4,7 +4,7 @@
 
 Leverage this Serverless Component to deploy a website hosted on serverless infrastructure on Tencent within seconds.  Easily add in your Vue.js, React.js or static assets and more.
 
-[请点击这里查看中文版文档](./README_CN.md)
+* [请点击这里查看中文版部署文档](./README_CN.md)
 
 &nbsp;
 
