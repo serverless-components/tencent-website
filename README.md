@@ -4,6 +4,8 @@
 
 Leverage this Serverless Component to deploy a website hosted on serverless infrastructure on Tencent within seconds.  Easily add in your Vue.js, React.js or static assets and more.
 
+[请点击这里查看中文版文档](./README_CN.md)
+
 &nbsp;
 
 1. [Install](#1-install)
@@ -27,7 +29,7 @@ $ mkdir my-website
 $ cd my-website
 ```
 
-Use the following commadn to create `serverless.yml` and `.env` files
+Use the following command to create `serverless.yml` and `.env` files
 
 ```console
 $ touch serverless.yml
@@ -41,7 +43,7 @@ TENCENT_SECRET_ID=123
 TENCENT_SECRET_KEY=123
 TENCENT_APP_ID=125xxxx
 ```
-* If you don't have a Tencent Cloud account, you could [sign up](https://intl.cloud.tencent.com/register) first.
+**Note:** If you don't have a Tencent Cloud account, you could [sign up](https://intl.cloud.tencent.com/register) first.
 
 Move/Create your code in the folder, and the directory should look something like this:
 
@@ -53,7 +55,7 @@ Move/Create your code in the folder, and the directory should look something lik
 
 ```
 
-The `code` directory could either be a simple directory of html/css/js assets files, or a full fledged React app.
+**Note:** The `code` directory could either be a simple directory of html/css/js assets files, or a full fledged React app.
 
 For this example, you could add the code to index.html file: 
 ```html
