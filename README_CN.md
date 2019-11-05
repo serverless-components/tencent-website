@@ -1,4 +1,4 @@
-[![Serverless Express Tencent Cloud](https://serverless-framework-1256773370.cos-website.ap-chengdu.myqcloud.com/component_pic/website.png)](http://serverless.com)
+[![Serverless Framework Tencent Cloud Plugin](https://s3.amazonaws.com/assets.general.serverless.com/component_website_tencent/readme-website-tencent-serverless.png)](http://serverless.com)
 
 &nbsp;
 
