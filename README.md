@@ -83,7 +83,7 @@ myWebsite:
   component: "@serverless/tencent-website"
   inputs:
     code:
-      src: ./src
+      src: ./code
       index: index.html
       error: index.html
     region: ap-guangzhou
