@@ -57,7 +57,6 @@ $ cd my-website
 # .env
 TENCENT_SECRET_ID=123
 TENCENT_SECRET_KEY=123
-TENCENT_APP_ID=123
 ```
 
 * `code`目录下应该对应html/css/js资源的文件，或者一个完整的React应用
