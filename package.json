@@ -1,6 +1,6 @@
 {
   "name": "@serverless/tencent-website",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "main": "./serverless.js",
   "publishConfig": {
     "access": "public"
@@ -18,7 +18,8 @@
   "dependencies": {
     "@serverless/tencent-cos": "^1.2.1",
     "@serverless/core": "^1.0.0",
-    "cos-nodejs-sdk-v5": "^2.5.14"
+    "cos-nodejs-sdk-v5": "^2.5.14",
+    "tencentcloud-sdk-nodejs": "^3.0.87"
   },
   "devDependencies": {
     "babel-eslint": "9.0.0",
