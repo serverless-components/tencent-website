@@ -41,9 +41,8 @@ Add the access keys of a [Tencent CAM Role](https://console.cloud.tencent.com/ca
 
 ```
 # .env
-TENCENT_SECRET_ID=123
-TENCENT_SECRET_KEY=123
-TENCENT_APP_ID=125xxxx
+TENCENT_SECRET_ID=XXX
+TENCENT_SECRET_KEY=XXX
 ```
 **Note:** If you don't have a Tencent Cloud account, you could [sign up](https://intl.cloud.tencent.com/register) first.
 
@@ -57,11 +56,7 @@ Move/Create your code in the folder, and the directory should look something lik
 
 ```
 
-```
-# .env
-TENCENT_SECRET_ID=XXX
-TENCENT_SECRET_KEY=XXX
-```
+
 * If you don't have a Tencent Cloud account, you could [sign up](https://intl.cloud.tencent.com/register) first. 
 
 The `code` directory could either be a simple directory of html/css/js assets files, or a full fledged React app.
