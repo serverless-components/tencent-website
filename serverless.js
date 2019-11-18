@@ -1,4 +1,5 @@
 const COS = require('cos-nodejs-sdk-v5')
+const TencentLogin = require('tencent-login')
 const path = require('path')
 const util = require('util')
 const fs = require('fs')
@@ -53,7 +54,9 @@ class Website extends Component {
   getAppid(credentials) {
     const secret_id = credentials.SecretId
     const secret_key = credentials.SecretKey
-    const cred = new tencentcloud.common.Credential(secret_id, secret_key)
+    const cred = credentials.token
+      ? new tencentcloud.common.Credential(secret_id, secret_key, credentials.token)
+      : new tencentcloud.common.Credential(secret_id, secret_key)
     const httpProfile = new HttpProfile()
     httpProfile.reqTimeout = 30
     const clientProfile = new ClientProfile('HmacSHA256', httpProfile)
@@ -69,10 +72,72 @@ class Website extends Component {
     }
   }
 
+  async doLogin() {
+    const login = new TencentLogin()
+    const tencent_credentials = await login.login()
+    if (tencent_credentials) {
+      tencent_credentials.timestamp = Date.now() / 1000
+      const tencent_credentials_json = JSON.stringify(tencent_credentials)
+      try {
+        const tencent = {
+          SecretId: tencent_credentials.tencent_secret_id,
+          SecretKey: tencent_credentials.tencent_secret_key,
+          AppId: tencent_credentials.tencent_appid,
+          token: tencent_credentials.tencent_token,
+          timestamp: tencent_credentials.timestamp
+        }
+        await fs.writeFileSync('./.env_temp', tencent_credentials_json)
+        this.context.debug(
+          'The temporary key is saved successfully, and the validity period is two hours.'
+        )
+        return tencent
+      } catch (e) {
+        throw 'Error getting temporary key: ' + e
+      }
+    }
+  }
+
+  async getTempKey() {
+    const that = this
+    try {
+      const data = await fs.readFileSync('./.env_temp', 'utf8')
+      try {
+        const tencent = {}
+        const tencent_credentials_read = JSON.parse(data)
+        if (Date.now() / 1000 - tencent_credentials_read.timestamp <= 7000) {
+          tencent.SecretId = tencent_credentials_read.tencent_secret_id
+          tencent.SecretKey = tencent_credentials_read.tencent_secret_key
+          tencent.AppId = tencent_credentials_read.tencent_appid
+          tencent.token = tencent_credentials_read.tencent_token
+          tencent.timestamp = tencent_credentials_read.timestamp
+          return tencent
+        }
+        return await that.doLogin()
+      } catch (e) {
+        return await that.doLogin()
+      }
+    } catch (e) {
+      return await that.doLogin()
+    }
+  }
+
   async default(inputs = {}) {
     this.context.status('Deploying')
     this.context.debug(`Starting Website Component.`)
-
+    let { tencent } = this.context.credentials
+    if (!tencent) {
+      tencent = await this.getTempKey(tencent)
+      this.context.credentials.tencent = tencent
+    }
+    const option = {
+      region: inputs.region || 'ap-guangzhou',
+      timestamp: this.context.credentials.tencent.timestamp || null,
+      token: this.context.credentials.tencent.token || null
+    }
+    if (!this.context.credentials.tencent.AppId) {
+      const appId = await this.getAppid(tencent)
+      this.context.credentials.tencent.AppId = appId.AppId
+    }
     // Default to current working directory
     const appId = await this.getAppid(this.context.credentials.tencent)
     this.context.credentials.tencent.AppId = appId.AppId
@@ -100,11 +165,26 @@ class Website extends Component {
     this.state.bucketName = inputs.bucketName
     await this.save()
 
-    const cos = new COS({
-      SecretId: this.context.credentials.tencent.SecretId,
-      SecretKey: this.context.credentials.tencent.SecretKey,
-      UserAgent: 'ServerlessComponent'
-    })
+    let cos
+    if (!option.token) {
+      cos = new COS({
+        SecretId: this.context.credentials.tencent.SecretId,
+        SecretKey: this.context.credentials.tencent.SecretKey,
+        UserAgent: 'ServerlessComponent'
+      })
+    } else {
+      cos = new COS({
+        getAuthorization: function(option, callback) {
+          callback({
+            TmpSecretId: this.context.credentials.tencent.SecretId,
+            TmpSecretKey: this.context.credentials.tencent.SecretKey,
+            UserAgent: 'ServerlessComponent',
+            XCosSecurityToken: option.token,
+            ExpiredTime: option.timestamp
+          })
+        }
+      })
+    }
 
     this.context.debug(`Configuring bucket ${inputs.bucketName} for website hosting.`)
     await configureBucketForHosting(
