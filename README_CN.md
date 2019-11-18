@@ -2,7 +2,7 @@
 
 &nbsp;
 
-# 腾讯云静态网站应用
+# 腾讯云静态网站组件
 
 ## 简介
 
@@ -76,7 +76,7 @@ TENCENT_SECRET_KEY=123
 Hello, Tencent Cloud
 </body>
 </html>
-
+```
 
 ### 3. 配置
 
@@ -90,7 +90,7 @@ myWebsite:
   component: "@serverless/tencent-website"
   inputs:
     code:
-      src: ./src
+      src: ./code
       index: index.html
       error: index.html
     region: ap-guangzhou
