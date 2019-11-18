@@ -126,7 +126,7 @@ class Website extends Component {
     this.context.debug(`Starting Website Component.`)
     let { tencent } = this.context.credentials
     if (!tencent) {
-      tencent = await this.getTempKey(tencent)
+      tencent = await this.getTempKey()
       this.context.credentials.tencent = tencent
     }
     const option = {
@@ -165,26 +165,27 @@ class Website extends Component {
     this.state.bucketName = inputs.bucketName
     await this.save()
 
-    let cos
-    if (!option.token) {
-      cos = new COS({
-        SecretId: this.context.credentials.tencent.SecretId,
-        SecretKey: this.context.credentials.tencent.SecretKey,
-        UserAgent: 'ServerlessComponent'
-      })
-    } else {
-      cos = new COS({
-        getAuthorization: function(option, callback) {
-          callback({
-            TmpSecretId: this.context.credentials.tencent.SecretId,
-            TmpSecretKey: this.context.credentials.tencent.SecretKey,
-            UserAgent: 'ServerlessComponent',
-            XCosSecurityToken: option.token,
-            ExpiredTime: option.timestamp
-          })
-        }
-      })
-    }
+		let cos
+		if (!option.token) {
+			cos = new COS({
+				SecretId: this.context.credentials.tencent.SecretId,
+				SecretKey: this.context.credentials.tencent.SecretKey,
+				UserAgent: 'ServerlessComponent'
+			})
+		} else {
+			const tencentConf =  this.context.credentials.tencent
+			cos = new COS({
+				getAuthorization: function(option, callback) {
+					callback({
+						TmpSecretId: tencentConf.SecretId,
+						TmpSecretKey: tencentConf.SecretKey,
+						UserAgent: 'ServerlessComponent',
+						XCosSecurityToken: tencentConf.token,
+						ExpiredTime: tencentConf.timestamp
+					})
+				}
+			})
+		}
 
     this.context.debug(`Configuring bucket ${inputs.bucketName} for website hosting.`)
     await configureBucketForHosting(
