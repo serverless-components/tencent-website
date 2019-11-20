@@ -187,6 +187,7 @@ class Website extends Component {
       })
     }
 
+    inputs.protocol = inputs.protocol || 'https'
     this.context.debug(`Configuring bucket ${inputs.bucketName} for website hosting.`)
     await configureBucketForHosting(
       cos,
@@ -246,7 +247,7 @@ class Website extends Component {
 
     this.state.bucketName = inputs.bucketName
     this.state.region = inputs.region
-    this.state.url = `https://${inputs.bucketName}.cos-website.${inputs.region}.myqcloud.com`
+    this.state.url = `${inputs.protocol}://${inputs.bucketName}.cos-website.${inputs.region}.myqcloud.com`
     await this.save()
 
     const outputs = {
