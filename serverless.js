@@ -195,7 +195,8 @@ class Website extends Component {
       inputs.region,
       inputs.code.index,
       inputs.code.error,
-      inputs.cors || null
+      inputs.cors || null,
+      inputs.protocol
     )
 
     // Build environment variables

@@ -1,7 +1,16 @@
 const util = require('util')
 const { utils } = require('@serverless/core')
 
-const configureBucketForHosting = async (cos, bucketName, appid, region, index, error, cors) => {
+const configureBucketForHosting = async (
+  cos,
+  bucketName,
+  appid,
+  region,
+  index,
+  error,
+  cors,
+  protocol
+) => {
   let handler
 
   const cosBucketPolicy = {
@@ -28,7 +37,7 @@ const configureBucketForHosting = async (cos, bucketName, appid, region, index, 
         Key: error || 'error.html'
       },
       RedirectAllRequestsTo: {
-        Protocol: 'https'
+        Protocol: protocol || 'https'
       }
     }
   }

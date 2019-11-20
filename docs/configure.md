@@ -16,6 +16,7 @@ myWebsite:
       error: index.html 
     region: ap-guangzhou 
     bucketName: my-bucket
+    protocol: http
     env: 
       API_URL: https://api.com
     cors:
@@ -46,6 +47,7 @@ Main param description
 | [code](#code-param-description)    | Required     | |  Website code information |
 | region | Optional  | ap-guangzhou            |  |
 | bucketName  | Required             |             | Bucket name, if you don't add the AppId suffix, it will be added automatically for you, capital letters are not allowed |
+| protocol  | Optional             |     https        | Https or http |
 | env | Optional             |             | Environment variables to include in a 'env.js' file with your uploaded code. |
 | [cors](#cors-param-description)| Optional            |             | Cross-Origin Resource Sharing |
 
