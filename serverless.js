@@ -77,19 +77,18 @@ class Website extends Component {
     const tencent_credentials = await login.login()
     if (tencent_credentials) {
       tencent_credentials.timestamp = Date.now() / 1000
-      const tencent_credentials_json = JSON.stringify(tencent_credentials)
       try {
         const tencent = {
-          SecretId: tencent_credentials.tencent_secret_id,
-          SecretKey: tencent_credentials.tencent_secret_key,
-          AppId: tencent_credentials.tencent_appid,
-          token: tencent_credentials.tencent_token,
+          SecretId: tencent_credentials.secret_id,
+          SecretKey: tencent_credentials.secret_key,
+          AppId: tencent_credentials.appid,
+          token: tencent_credentials.token,
+          expired: tencent_credentials.expired,
+          signature: tencent_credentials.signature,
+          uuid: tencent_credentials.uuid,
           timestamp: tencent_credentials.timestamp
         }
-        await fs.writeFileSync('./.env_temp', tencent_credentials_json)
-        this.context.debug(
-          'The temporary key is saved successfully, and the validity period is two hours.'
-        )
+        await fs.writeFileSync('./.env_temp', JSON.stringify(tencent))
         return tencent
       } catch (e) {
         throw 'Error getting temporary key: ' + e
@@ -97,19 +96,60 @@ class Website extends Component {
     }
   }
 
-  async getTempKey() {
+  async sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms)
+    })
+  }
+
+  async getTempKey(temp) {
     const that = this
+
+    if (temp) {
+      while (true) {
+        try {
+          const tencent_credentials_read = JSON.parse(await fs.readFileSync('./.env_temp', 'utf8'))
+          if (
+            Date.now() / 1000 - tencent_credentials_read.timestamp <= 5 &&
+            tencent_credentials_read.AppId
+          ) {
+            return tencent_credentials_read
+          }
+          await that.sleep(1000)
+        } catch (e) {
+          await that.sleep(1000)
+        }
+      }
+    }
+
     try {
       const data = await fs.readFileSync('./.env_temp', 'utf8')
       try {
         const tencent = {}
         const tencent_credentials_read = JSON.parse(data)
-        if (Date.now() / 1000 - tencent_credentials_read.timestamp <= 7000) {
-          tencent.SecretId = tencent_credentials_read.tencent_secret_id
-          tencent.SecretKey = tencent_credentials_read.tencent_secret_key
-          tencent.AppId = tencent_credentials_read.tencent_appid
-          tencent.token = tencent_credentials_read.tencent_token
-          tencent.timestamp = tencent_credentials_read.timestamp
+        if (
+          Date.now() / 1000 - tencent_credentials_read.timestamp <= 6000 &&
+          tencent_credentials_read.AppId
+        ) {
+          return tencent_credentials_read
+        }
+        const login = new TencentLogin()
+        const tencent_credentials_flush = await login.flush(
+          tencent_credentials_read.uuid,
+          tencent_credentials_read.expired,
+          tencent_credentials_read.signature,
+          tencent_credentials_read.AppId
+        )
+        if (tencent_credentials_flush) {
+          tencent.SecretId = tencent_credentials_flush.secret_id
+          tencent.SecretKey = tencent_credentials_flush.secret_key
+          tencent.AppId = tencent_credentials_flush.appid
+          tencent.token = tencent_credentials_flush.token
+          tencent.expired = tencent_credentials_flush.expired
+          tencent.signature = tencent_credentials_flush.signature
+          tencent.uuid = tencent_credentials_read.uuid
+          tencent.timestamp = Date.now() / 1000
+          await fs.writeFileSync('./.env_temp', JSON.stringify(tencent))
           return tencent
         }
         return await that.doLogin()
@@ -122,13 +162,17 @@ class Website extends Component {
   }
 
   async default(inputs = {}) {
+    // login
+    const temp = this.context.instance.state.status
+    this.context.instance.state.status = true
     this.context.status('Deploying')
     this.context.debug(`Starting Website Component.`)
     let { tencent } = this.context.credentials
     if (!tencent) {
-      tencent = await this.getTempKey()
+      tencent = await this.getTempKey(temp)
       this.context.credentials.tencent = tencent
     }
+
     const option = {
       region: inputs.region || 'ap-guangzhou',
       timestamp: this.context.credentials.tencent.timestamp || null,
@@ -207,8 +251,8 @@ class Website extends Component {
       let script = 'window.env = {};\n'
       inputs.env = inputs.env || {}
       for (const e in inputs.env) {
-				// eslint-disable-line
-				script += `window.env.${e} = ${JSON.stringify(inputs.env[e])};\n` // eslint-disable-line
+        // eslint-disable-line
+        script += `window.env.${e} = ${JSON.stringify(inputs.env[e])};\n` // eslint-disable-line
       }
       const envFilePath = path.join(inputs.code.root, 'env.js')
       await utils.writeFile(envFilePath, script)
@@ -224,7 +268,7 @@ class Website extends Component {
       try {
         await exec(inputs.code.hook, options)
       } catch (err) {
-				console.error(err.stderr) // eslint-disable-line
+        console.error(err.stderr) // eslint-disable-line
         throw new Error(
           `Failed building website via "${inputs.code.hook}" due to the following error: "${err.stderr}"`
         )
