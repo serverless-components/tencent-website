@@ -36,15 +36,6 @@ $ npm install -g serverless
 $ mkdir my-website
 $ cd my-website
 ```
-在文件夹中创建对应的 `serverless.yml` 和 `.env` 两个文件，并将静态页面放在`code`目录下，文件目录结构如下：
-
-```
-|- code
-  |- index.html
-|- serverless.yml
-|- .env      # your Tencent SecretId/Key/AppId
-
-```
 
 在文件夹中创建对应的 `serverless.yml` 文件，并将静态页面放在`code`目录下，文件目录结构如下：
 
@@ -72,8 +63,11 @@ Hello, Tencent Cloud
 
 ### 3. 配置
 
-在serverless.yml中进行如下配置
+本地创建 `serverless.yml` 文件，在其中进行如下配置
 
+```console
+$ touch serverless.yml
+```
 
 ```yml
 # serverless.yml
