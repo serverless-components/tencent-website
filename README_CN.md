@@ -39,6 +39,10 @@ $ cd my-website
 
 在文件夹中创建对应的 `serverless.yml` 文件，并将静态页面放在`code`目录下，文件目录结构如下：
 
+```console
+$ touch serverless.yml
+```
+
 ```
 |- code
   |- index.html
@@ -63,11 +67,7 @@ Hello, Tencent Cloud
 
 ### 3. 配置
 
-本地创建 `serverless.yml` 文件，在其中进行如下配置
-
-```console
-$ touch serverless.yml
-```
+在 `serverless.yml` 文件中进行如下配置
 
 ```yml
 # serverless.yml
