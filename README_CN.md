@@ -46,25 +46,17 @@ $ cd my-website
 
 ```
 
-在 `.env` 文件中配置腾讯云的APPID，SecretId和SecretKey信息并保存
-
-如果没有腾讯云账号，可以在此[注册新账号](https://cloud.tencent.com/register)。
-
-如果已有腾讯云账号，可以在[API密钥管理
-](https://console.cloud.tencent.com/cam/capi)中获取`APPID`, `SecretId` 和`SecretKey`.
+在文件夹中创建对应的 `serverless.yml` 文件，并将静态页面放在`code`目录下，文件目录结构如下：
 
 ```
-# .env
-TENCENT_SECRET_ID=123
-TENCENT_SECRET_KEY=123
+|- code
+  |- index.html
+|- serverless.yml
+
 ```
 
-* `code`目录下应该对应html/css/js资源的文件，或者一个完整的React应用
-
-示例html[下载地址](https://tinatest-1251971143.cos.ap-beijing.myqcloud.com/index.html)
-
-该例子，也可以将以下代码放入到index.html文件中：
-
+ `code`目录下应该对应 HTML/CSS/JS 资源的文件，或者一个完整的 React 应用。
+下载 [示例 HTML](https://tinatest-1251971143.cos.ap-beijing.myqcloud.com/index.html)，将以下代码放在 index.html 文件中：
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -103,7 +95,10 @@ myWebsite:
 
 ### 4. 部署
 
-通过如下命令进行部署，并查看部署过程中的信息
+如您的账号未[登陆](https://cloud.tencent.com/login)或[注册](https://cloud.tencent.com/register)腾讯云，您可以直接通过`微信`扫描命令行中的二维码进行授权登陆和注册。
+
+通过`sls`命令进行部署，并可以添加`--debug`参数查看部署过程中的信息
+
 ```console
 $ sls --debug
   
@@ -136,7 +131,6 @@ $ sls --debug
 ```
 
 
-
 ### 5. 移除
 
 通过以下命令移除项目
@@ -152,6 +146,26 @@ sls remove --debug
   DEBUG ─ Finished Website Removal.
 
   3s › myWebsite › done
+```
+
+### 账号配置（可选）
+
+当前默认支持CLI扫描二维码登录，如您希望配置持久的环境变量/秘钥信息，也可以本地创建 `.env` 文件
+
+```console
+$ touch .env # 腾讯云的配置信息
+```
+
+在 `.env` 文件中配置腾讯云的SecretId和SecretKey信息并保存
+
+如果没有腾讯云账号，可以在此[注册新账号](https://cloud.tencent.com/register)。
+
+如果已有腾讯云账号，可以在[API密钥管理](https://console.cloud.tencent.com/cam/capi)中获取 `SecretId` 和`SecretKey`.
+
+```
+# .env
+TENCENT_SECRET_ID=123
+TENCENT_SECRET_KEY=123
 ```
 
 ### 还支持哪些组件？
