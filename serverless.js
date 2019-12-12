@@ -201,7 +201,7 @@ class Website extends Component {
     this.context.status(`Preparing Tencent COS Bucket`)
     this.context.debug(`Preparing website Tencent COS bucket ${inputs.bucketName}.`)
 
-    const websiteBucket = await this.load('@serverless/tencent-cos', 'websiteBucket')
+    const websiteBucket = await this.load('@tencent-serverless/tencent-cos-beta', 'websiteBucket')
     await websiteBucket({
       bucket: inputs.bucketName,
       region: inputs.region
@@ -231,7 +231,7 @@ class Website extends Component {
       })
     }
 
-    inputs.protocol = inputs.protocol || 'https'
+    inputs.protocol = inputs.protocol || 'http'
     this.context.debug(`Configuring bucket ${inputs.bucketName} for website hosting.`)
     await configureBucketForHosting(
       cos,
@@ -289,14 +289,46 @@ class Website extends Component {
       await websiteBucket.upload({ file: dirToUploadPath })
     }
 
+    const cosOriginAdd = `${inputs.bucketName}.cos-website.${inputs.region}.myqcloud.com`
+
+    // add user domain
+    if (inputs.hosts && inputs.hosts.length > 0) {
+      let tencentCdn
+      let tencentCdnOutput
+      let cdnInputs
+      this.state.host = new Array()
+      this.state.hostName = new Array()
+      for (let i = 0; i < inputs.hosts.length; i++) {
+        cdnInputs = inputs.hosts[i]
+        cdnInputs.hostType = 'cos'
+        cdnInputs.serviceType = 'web'
+        cdnInputs.fwdHost = cosOriginAdd
+        cdnInputs.origin = cosOriginAdd
+        tencentCdn = await this.load(
+          '@tencent-serverless/tencent-cdn-beta',
+          inputs.hosts[i].host.replace('.', '_')
+        )
+        tencentCdnOutput = await tencentCdn(cdnInputs)
+        const protocol = tencentCdnOutput.https ? 'https' : 'http'
+        this.state.host.push(
+          protocol + '://' + tencentCdnOutput.host + ' (CNAME: ' + tencentCdnOutput.cname + '）'
+        )
+        this.state.hostName.push(inputs.hosts[i].host.replace('.', '_'))
+      }
+    }
+
     this.state.bucketName = inputs.bucketName
     this.state.region = inputs.region
-    this.state.url = `${inputs.protocol}://${inputs.bucketName}.cos-website.${inputs.region}.myqcloud.com`
+    this.state.url = `${inputs.protocol}://${cosOriginAdd}`
     await this.save()
 
     const outputs = {
       url: this.state.url,
       env: inputs.env || {}
+    }
+
+    if (this.state.host) {
+      outputs.host = this.state.host
     }
 
     this.context.debug(`Website deployed successfully to URL: ${this.state.url}.`)
@@ -314,8 +346,16 @@ class Website extends Component {
     this.context.debug(`Starting Website Removal.`)
 
     this.context.debug(`Removing Website bucket.`)
-    const websiteBucket = await this.load('@serverless/tencent-cos', 'websiteBucket')
+    const websiteBucket = await this.load('@tencent-serverless/tencent-cos-beta', 'websiteBucket')
     await websiteBucket.remove()
+
+    if (this.state.hostName && this.state.hostName.length > 0) {
+      let tencentCdn
+      for (let i = 0; i < this.state.hostName.length; i++) {
+        tencentCdn = await this.load('@tencent-serverless/tencent-cdn-beta', this.state.hostName[i])
+        await tencentCdn.remove()
+      }
+    }
 
     this.state = {}
     await this.save()
