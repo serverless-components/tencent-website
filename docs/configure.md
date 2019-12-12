@@ -17,6 +17,35 @@ myWebsite:
     region: ap-guangzhou 
     bucketName: my-bucket
     protocol: http
+    hosts:
+      - host: abc.cn
+      - host: abc.com
+        fullUrl: on
+        cache:
+          - type: 0
+            rule: all
+            time: 1000
+          - type: 0
+            rule: all
+            time: 1000
+        cacheMode: simple
+        refer:
+          - type: 1
+            list:
+              - 'qq.baidu.com'
+              - '*.baidu.com'
+        accessIp:
+          type: 1
+          list:
+            - '1.2.3.4'
+            - '2.3.4.5'
+        https:
+          certId: 123
+          cert: 123
+          privateKey: 123
+          http2: off
+          httpsType: 2
+          forceSwitch: -2
     env: 
       API_URL: https://api.com
     cors:
@@ -50,6 +79,7 @@ Main param description
 | protocol  | Optional             |     https        | Https or http |
 | env | Optional             |             | Environment variables to include in a 'env.js' file with your uploaded code. |
 | [cors](#cors-param-description)| Optional            |             | Cross-Origin Resource Sharing |
+| [hosts](#hosts-param-description)| Optional            |             | Add domain |
 
 
 ### code param description
@@ -73,3 +103,6 @@ Main param description
 | allowedOrigins  | Required             |      Allowed origin in the format of protocol://domain name\[:port number], such as http://www.qq.com. Wildcard * is supported      |
 | allowedHeaders    | Required            |     Tells the server what custom HTTP request headers can be used for subsequent requests when the OPTIONS request is sent. Wildcard * is supported      |
 | maxAgeSeconds    | Required            |     Sets the validity period of the result of the OPTIONS request     |
+
+
+### hosts param description
