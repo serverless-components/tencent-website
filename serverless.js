@@ -201,7 +201,7 @@ class Website extends Component {
     this.context.status(`Preparing Tencent COS Bucket`)
     this.context.debug(`Preparing website Tencent COS bucket ${inputs.bucketName}.`)
 
-    const websiteBucket = await this.load('@tencent-serverless/tencent-cos-beta', 'websiteBucket')
+    const websiteBucket = await this.load('@serverless/tencent-cos', 'websiteBucket')
     await websiteBucket({
       bucket: inputs.bucketName,
       region: inputs.region
@@ -305,7 +305,7 @@ class Website extends Component {
         cdnInputs.fwdHost = cosOriginAdd
         cdnInputs.origin = cosOriginAdd
         tencentCdn = await this.load(
-          '@tencent-serverless/tencent-cdn-beta',
+          '@serverless/tencent-cdn',
           inputs.hosts[i].host.replace('.', '_')
         )
         tencentCdnOutput = await tencentCdn(cdnInputs)
@@ -346,13 +346,13 @@ class Website extends Component {
     this.context.debug(`Starting Website Removal.`)
 
     this.context.debug(`Removing Website bucket.`)
-    const websiteBucket = await this.load('@tencent-serverless/tencent-cos-beta', 'websiteBucket')
+    const websiteBucket = await this.load('@serverless/tencent-cos', 'websiteBucket')
     await websiteBucket.remove()
 
     if (this.state.hostName && this.state.hostName.length > 0) {
       let tencentCdn
       for (let i = 0; i < this.state.hostName.length; i++) {
-        tencentCdn = await this.load('@tencent-serverless/tencent-cdn-beta', this.state.hostName[i])
+        tencentCdn = await this.load('@serverless/tencent-cdn', this.state.hostName[i])
         await tencentCdn.remove()
       }
     }
