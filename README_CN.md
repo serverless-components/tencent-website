@@ -6,7 +6,7 @@
 
 ## 简介
 
-静态网站应用调用了基础的腾讯云COS组件，可以快速部署静态网站页面到对象存储COS中，并生成域名供访问。
+静态网站应用调用了基础的腾讯云 COS 组件，可以快速部署静态网站页面到对象存储 COS 中，并生成域名供访问。
 
 ## 快速开始
 
@@ -22,7 +22,7 @@
 
 ### 1. 安装
 
-通过npm安装serverless
+通过 npm 安装 serverless
 
 ```console
 $ npm install -g serverless
@@ -30,7 +30,7 @@ $ npm install -g serverless
 
 ### 2. 创建
 
-本地创建my-website文件夹
+本地创建 my-website 文件夹
 
 ```console
 $ mkdir my-website
@@ -50,18 +50,19 @@ $ touch serverless.yml
 
 ```
 
- `code`目录下应该对应 HTML/CSS/JS 资源的文件，或者一个完整的 React 应用。
+`code`目录下应该对应 HTML/CSS/JS 资源的文件，或者一个完整的 React 应用。
 下载 [示例 HTML](https://tinatest-1251971143.cos.ap-beijing.myqcloud.com/index.html)，将以下代码放在 index.html 文件中：
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Hello, Tencent Cloud</title>
-</head>
-<body>
-Hello, Tencent Cloud
-</body>
+  </head>
+  <body>
+    Hello, Tencent Cloud
+  </body>
 </html>
 ```
 
@@ -73,7 +74,7 @@ Hello, Tencent Cloud
 # serverless.yml
 
 myWebsite:
-  component: "@serverless/tencent-website"
+  component: '@serverless/tencent-website'
   inputs:
     code:
       src: ./code
@@ -81,11 +82,9 @@ myWebsite:
       error: index.html
     region: ap-guangzhou
     bucketName: my-bucket
-
 ```
 
-* [点击此处查看配置文档](https://github.com/serverless-tencent/tencent-website/blob/master/docs/configure.md)
-
+- [点击此处查看配置文档](https://github.com/serverless-tencent/tencent-website/blob/master/docs/configure.md)
 
 ### 4. 部署
 
@@ -95,7 +94,7 @@ myWebsite:
 
 ```console
 $ sls --debug
-  
+
     DEBUG ─ Resolving the template's static variables.
     DEBUG ─ Collecting components from the template.
     DEBUG ─ Downloading any NPM components found in the template.
@@ -115,19 +114,19 @@ $ sls --debug
     DEBUG ─ Starting upload to bucket my-bucket-1300415943 in region ap-guangzhou
     DEBUG ─ Uploading directory /Users/dfounderliu/Desktop/temp/code/src to bucket my-bucket-1300415943
     DEBUG ─ Website deployed successfully to URL: https://my-bucket-1300415943.cos-website.ap-guangzhou.myqcloud.com.
-  
-    myWebsite: 
+
+    myWebsite:
       url: https://my-bucket-1300415943.cos-website.ap-guangzhou.myqcloud.com
-      env: 
-  
+      env:
+
     2s › myWebsite › done
 
 ```
 
-
 ### 5. 移除
 
 通过以下命令移除项目
+
 ```console
 sls remove --debug
 
@@ -144,17 +143,17 @@ sls remove --debug
 
 ### 账号配置（可选）
 
-当前默认支持CLI扫描二维码登录，如您希望配置持久的环境变量/秘钥信息，也可以本地创建 `.env` 文件
+当前默认支持 CLI 扫描二维码登录，如您希望配置持久的环境变量/秘钥信息，也可以本地创建 `.env` 文件
 
 ```console
 $ touch .env # 腾讯云的配置信息
 ```
 
-在 `.env` 文件中配置腾讯云的SecretId和SecretKey信息并保存
+在 `.env` 文件中配置腾讯云的 SecretId 和 SecretKey 信息并保存
 
 如果没有腾讯云账号，可以在此[注册新账号](https://cloud.tencent.com/register)。
 
-如果已有腾讯云账号，可以在[API密钥管理](https://console.cloud.tencent.com/cam/capi)中获取 `SecretId` 和`SecretKey`.
+如果已有腾讯云账号，可以在[API 密钥管理](https://console.cloud.tencent.com/cam/capi)中获取 `SecretId` 和`SecretKey`.
 
 ```
 # .env
