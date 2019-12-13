@@ -2,11 +2,11 @@
 
 &nbsp;
 
-Leverage this Serverless Component to deploy a website hosted on serverless infrastructure on Tencent within seconds.  Easily add in your Vue.js, React.js or static assets and more.
+Leverage this Serverless Component to deploy a website hosted on serverless infrastructure on Tencent within seconds. Easily add in your Vue.js, React.js or static assets and more.
 
 &nbsp;
 
-* [请点击这里查看中文版部署文档](./README_CN.md)
+- [请点击这里查看中文版部署文档](./README_CN.md)
 
 &nbsp;
 
@@ -37,13 +37,15 @@ Use the following command to create `serverless.yml` and `.env` files
 $ touch serverless.yml
 $ touch .env # your Tencent API Keys
 ```
-Add the access keys of a [Tencent CAM Role](https://console.cloud.tencent.com/cam/capi) with `AdministratorAccess` in the `.env` file, using this format: 
+
+Add the access keys of a [Tencent CAM Role](https://console.cloud.tencent.com/cam/capi) with `AdministratorAccess` in the `.env` file, using this format:
 
 ```
 # .env
 TENCENT_SECRET_ID=XXX
 TENCENT_SECRET_KEY=XXX
 ```
+
 **Note:** If you don't have a Tencent Cloud account, you could [sign up](https://intl.cloud.tencent.com/register) first.
 
 Move/Create your code in the folder, and the directory should look something like this:
@@ -56,25 +58,23 @@ Move/Create your code in the folder, and the directory should look something lik
 
 ```
 
+- If you don't have a Tencent Cloud account, you could [sign up](https://intl.cloud.tencent.com/register) first.
 
-* If you don't have a Tencent Cloud account, you could [sign up](https://intl.cloud.tencent.com/register) first. 
-
-The `code` directory could either be a simple directory of html/css/js assets files, or a full fledged React app.
 **Note:** The `code` directory could either be a simple directory of html/css/js assets files, or a full fledged React app.
 
-For this example, you could add the code to index.html file: 
+For this example, you could add the code to index.html file:
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Hello, Tencent Cloud</title>
-</head>
-<body>
-Hello, Tencent Cloud
-</body>
+  </head>
+  <body>
+    Hello, Tencent Cloud
+  </body>
 </html>
-
 ```
 
 ### 3. Configure
@@ -83,7 +83,7 @@ Hello, Tencent Cloud
 # serverless.yml
 
 myWebsite:
-  component: "@serverless/tencent-website"
+  component: '@serverless/tencent-website'
   inputs:
     code:
       src: ./code
@@ -91,18 +91,15 @@ myWebsite:
       error: index.html
     region: ap-guangzhou
     bucketName: my-bucket
-
 ```
 
-* [Click here to view the configuration document](https://github.com/serverless-tencent/tencent-website/blob/master/docs/configure.md)
-
-
+- [Click here to view the configuration document](https://github.com/serverless-tencent/tencent-website/blob/master/docs/configure.md)
 
 ### 4. Deploy
 
 ```console
 $ sls --debug
-  
+
     DEBUG ─ Resolving the template's static variables.
     DEBUG ─ Collecting components from the template.
     DEBUG ─ Downloading any NPM components found in the template.
@@ -122,18 +119,18 @@ $ sls --debug
     DEBUG ─ Starting upload to bucket my-bucket-1300415943 in region ap-guangzhou
     DEBUG ─ Uploading directory /Users/dfounderliu/Desktop/temp/code/src to bucket my-bucket-1300415943
     DEBUG ─ Website deployed successfully to URL: https://my-bucket-1300415943.cos-website.ap-guangzhou.myqcloud.com.
-  
-    myWebsite: 
+
+    myWebsite:
       url: https://my-bucket-1300415943.cos-website.ap-guangzhou.myqcloud.com
-      env: 
-  
+      env:
+
     2s › myWebsite › done
 
 
 ```
 
-
 ### 5. Remove
+
 ```text
 $ sls remove --debug
 
