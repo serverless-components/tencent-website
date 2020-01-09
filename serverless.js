@@ -5,8 +5,7 @@ const fs = require('fs')
 const exec = util.promisify(require('child_process').exec)
 const { Component, utils } = require('@serverless/core')
 const { configureBucketForHosting } = require('./utils')
-// const tencentAuth = require('serverless-tencent-auth-tool')
-const tencentAuth = require('/Users/dfounderliu/Desktop/component/experience/serverless-tencent-auth-tool')
+const tencentAuth = require('serverless-tencent-auth-tool')
 
 class Website extends Component {
   confirmEnding(sourceStr, targetStr) {
