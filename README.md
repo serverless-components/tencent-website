@@ -1,4 +1,4 @@
-[![Serverless Framework Tencent Cloud Plugin](https://img.serverlesscloud.cn/202019/1578569597879-website.png)
+[![Serverless Framework Tencent Cloud Plugin](https://img.serverlesscloud.cn/202019/1578569597879-website.png)]
 
 &nbsp;
 
