@@ -2,56 +2,64 @@
 
 &nbsp;
 
-# 腾讯云静态网站组件
+Leverage this Serverless Component to deploy a website hosted on serverless infrastructure on Tencent within seconds. Easily add in your Vue.js, React.js or static assets and more.
 
-## 简介
-
-静态网站应用调用了基础的腾讯云 COS 组件，可以快速部署静态网站页面到对象存储 COS 中，并生成域名供访问。
-
-## 快速开始
-
-操作步骤如下：
-
-1. [安装](#1-安装)
-2. [创建](#2-创建)
-3. [配置](#3-配置)
-4. [部署](#4-部署)
-5. [移除](#5-移除)
 
 &nbsp;
 
-### 1. 安装
+1. [Install](#1-install)
+2. [Create](#2-create)
+3. [Configure](#3-configure)
+4. [Deploy](#4-deploy)
+5. [Remove](#5-remove)
 
-通过 npm 安装 serverless
+&nbsp;
+
+### 1. Install
 
 ```console
 $ npm install -g serverless
 ```
 
-### 2. 创建
-
-本地创建 my-website 文件夹
+### 2. Create
 
 ```console
 $ mkdir my-website
 $ cd my-website
 ```
 
-在文件夹中创建对应的 `serverless.yml` 文件，并将静态页面放在`code`目录下，文件目录结构如下：
+Use the following command to create `serverless.yml` and `.env` files
 
 ```console
 $ touch serverless.yml
+$ touch .env # your Tencent API Keys
 ```
+
+Add the access keys of a [Tencent CAM Role](https://console.cloud.tencent.com/cam/capi) with `AdministratorAccess` in the `.env` file, using this format:
+
+```
+# .env
+TENCENT_SECRET_ID=XXX
+TENCENT_SECRET_KEY=XXX
+```
+
+**Note:** If you don't have a Tencent Cloud account, you could [sign up](https://intl.cloud.tencent.com/register) first.
+
+Move/Create your code in the folder, and the directory should look something like this:
 
 ```
 |- code
   |- index.html
 |- serverless.yml
+|- .env      # your Tencent SecretId/Key/AppId
 
 ```
 
-`code`目录下应该对应 HTML/CSS/JS 资源的文件，或者一个完整的 React 应用。
-下载 [示例 HTML](https://tinatest-1251971143.cos.ap-beijing.myqcloud.com/index.html)，将以下代码放在 index.html 文件中：
+- If you don't have a Tencent Cloud account, you could [sign up](https://intl.cloud.tencent.com/register) first.
+
+**Note:** The `code` directory could either be a simple directory of html/css/js assets files, or a full fledged React app.
+
+For this example, you could add the code to index.html file:
 
 ```html
 <!DOCTYPE html>
@@ -66,9 +74,7 @@ $ touch serverless.yml
 </html>
 ```
 
-### 3. 配置
-
-在 `serverless.yml` 文件中进行如下配置
+### 3. Configure
 
 ```yml
 # serverless.yml
@@ -84,13 +90,9 @@ myWebsite:
     bucketName: my-bucket
 ```
 
-- [点击此处查看配置文档](https://github.com/serverless-tencent/tencent-website/blob/master/docs/configure.md)
+- [Click here to view the configuration document](https://github.com/serverless-tencent/tencent-website/blob/master/docs/configure.md)
 
-### 4. 部署
-
-如您的账号未[登陆](https://cloud.tencent.com/login)或[注册](https://cloud.tencent.com/register)腾讯云，您可以直接通过`微信`扫描命令行中的二维码进行授权登陆和注册。
-
-通过`sls`命令进行部署，并可以添加`--debug`参数查看部署过程中的信息
+### 4. Deploy
 
 ```console
 $ sls --debug
@@ -121,14 +123,13 @@ $ sls --debug
 
     2s › myWebsite › done
 
+
 ```
 
-### 5. 移除
+### 5. Remove
 
-通过以下命令移除项目
-
-```console
-sls remove --debug
+```text
+$ sls remove --debug
 
   DEBUG ─ Flushing template state and removing all components.
   DEBUG ─ Starting Website Removal.
@@ -139,28 +140,12 @@ sls remove --debug
   DEBUG ─ Finished Website Removal.
 
   3s › myWebsite › done
-```
 
-### 账号配置（可选）
-
-当前默认支持 CLI 扫描二维码登录，如您希望配置持久的环境变量/秘钥信息，也可以本地创建 `.env` 文件
-
-```console
-$ touch .env # 腾讯云的配置信息
-```
-
-在 `.env` 文件中配置腾讯云的 SecretId 和 SecretKey 信息并保存
-
-如果没有腾讯云账号，可以在此[注册新账号](https://cloud.tencent.com/register)。
-
-如果已有腾讯云账号，可以在[API 密钥管理](https://console.cloud.tencent.com/cam/capi)中获取 `SecretId` 和`SecretKey`.
 
 ```
-# .env
-TENCENT_SECRET_ID=123
-TENCENT_SECRET_KEY=123
-```
 
-### 还支持哪些组件？
+&nbsp;
 
-可以在 [Serverless Components](https://github.com/serverless/components) repo 中查询更多组件的信息。
+### New to Components?
+
+Checkout the [Serverless Components](https://github.com/serverless/components) repo for more information.
