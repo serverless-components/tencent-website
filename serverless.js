@@ -190,7 +190,7 @@ class Website extends Component {
    * Remove
    */
 
-  async remove() {
+  async remove(inputs = {}) {
     this.context.status(`Removing`)
 
     this.context.debug(`Starting Website Removal.`)
