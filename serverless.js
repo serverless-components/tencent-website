@@ -22,7 +22,7 @@ class Website extends Component {
   async default(inputs = {}) {
     // login
     const auth = new tencentAuth()
-    this.context.credentials.tencent = await auth.doAuth(this.context.credentials.tencent)
+    this.context.credentials.tencent = await auth.doAuth(this.context.credentials.tencent, 'tencent-website')
     const { tencent } = this.context.credentials
 
     const option = {
