@@ -22,18 +22,19 @@ class Website extends Component {
   async default(inputs = {}) {
     // login
     const auth = new tencentAuth()
-    this.context.credentials.tencent = await auth.doAuth(this.context.credentials.tencent, 'tencent-website')
-    const { tencent } = this.context.credentials
+    this.context.credentials.tencent = await auth.doAuth(this.context.credentials.tencent, {
+      client: 'tencent-website',
+      remark: inputs.fromClientRemark,
+      project: this.context.instance ? this.context.instance.id : undefined,
+      action: 'default'
+    })
 
     const option = {
       region: inputs.region || 'ap-guangzhou',
       timestamp: this.context.credentials.tencent.timestamp || null,
       token: this.context.credentials.tencent.token || null
     }
-    if (!this.context.credentials.tencent.AppId) {
-      const appId = await this.getAppid(tencent)
-      this.context.credentials.tencent.AppId = appId.AppId
-    }
+
     // Default to current working directory
     inputs.code = inputs.code || {}
     inputs.code.root = inputs.code.root ? path.resolve(inputs.code.root) : process.cwd()
@@ -54,7 +55,8 @@ class Website extends Component {
     const websiteBucket = await this.load('@serverless/tencent-cos', 'websiteBucket')
     await websiteBucket({
       bucket: inputs.bucketName,
-      region: inputs.region
+      region: inputs.region,
+      fromClientRemark: inputs.fromClientRemark || 'tencent-website'
     })
     this.state.bucketName = inputs.bucketName
     await this.save()
@@ -133,12 +135,15 @@ class Website extends Component {
       `Uploading website files from ${dirToUploadPath} to bucket ${inputs.bucketName}.`
     )
 
-    if (fs.lstatSync(dirToUploadPath).isDirectory()) {
-      await websiteBucket.upload({ dir: dirToUploadPath })
-    } else {
-      await websiteBucket.upload({ file: dirToUploadPath })
+    const uploadDict = {
+      fromClientRemark: inputs.fromClientRemark || 'tencent-website'
     }
-
+    if (fs.lstatSync(dirToUploadPath).isDirectory()) {
+      uploadDict.dir = dirToUploadPath
+    } else {
+      uploadDict.file = dirToUploadPath
+    }
+    await websiteBucket.upload(uploadDict)
     const cosOriginAdd = `${inputs.bucketName}.cos-website.${inputs.region}.myqcloud.com`
 
     // add user domain
@@ -158,6 +163,7 @@ class Website extends Component {
           '@serverless/tencent-cdn',
           inputs.hosts[i].host.replace('.', '_')
         )
+        cdnInputs.fromClientRemark = inputs.fromClientRemark || 'tencent-website'
         tencentCdnOutput = await tencentCdn(cdnInputs)
         const protocol = tencentCdnOutput.https ? 'https' : 'http'
         this.state.host.push(
@@ -196,14 +202,19 @@ class Website extends Component {
     this.context.debug(`Starting Website Removal.`)
 
     this.context.debug(`Removing Website bucket.`)
+
+    const removeInput = {
+      fromClientRemark: inputs.fromClientRemark || 'tencent-website'
+    }
+
     const websiteBucket = await this.load('@serverless/tencent-cos', 'websiteBucket')
-    await websiteBucket.remove()
+    await websiteBucket.remove(removeInput)
 
     if (this.state.hostName && this.state.hostName.length > 0) {
       let tencentCdn
       for (let i = 0; i < this.state.hostName.length; i++) {
         tencentCdn = await this.load('@serverless/tencent-cdn', this.state.hostName[i])
-        await tencentCdn.remove()
+        await tencentCdn.remove(removeInput)
       }
     }
 
