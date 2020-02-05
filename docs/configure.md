@@ -78,6 +78,7 @@ Main param description
 | bucketName                        |     Required      |              | Bucket name, if you don't add the AppId suffix, it will be added automatically for you, capital letters are not allowed |
 | protocol                          |     Optional      |    https     | Https or http                                                                                                           |
 | env                               |     Optional      |              | Environment variables to include in a 'env.js' file with your uploaded code.                                            |
+| envPath                           |     Optional      |              | The generate env file folder of your website project. Defaults to current working directory.                            |
 | [cors](#cors-param-description)   |     Optional      |              | Cross-Origin Resource Sharing                                                                                           |
 | [hosts](#hosts-param-description) |     Optional      |              | Add domain                                                                                                              |
 
