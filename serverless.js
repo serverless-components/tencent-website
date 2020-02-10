@@ -90,7 +90,7 @@ class Website extends Component {
 
     // Build environment variables
     const envPath = inputs.code.envPath || inputs.code.root
-    if (Object.keys(inputs.env).length && envPath) {
+    if (inputs.env && Object.keys(inputs.env).length && envPath) {
       this.context.status(`Bundling environment variables`)
       this.context.debug(`Bundling website environment variables.`)
       let script = 'window.env = {};\n'
