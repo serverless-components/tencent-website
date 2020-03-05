@@ -17,12 +17,6 @@ const configureBucketForHosting = async (
     version: '2.0',
     Statement: [
       {
-        Effect: 'Allow',
-        Action: ['permid/280649', 'permid/280655'],
-        Principal: { qcs: ['qcs::cam::anyone:anyone'] },
-        Resource: [`qcs::cos:${region}:uid/${appid}:${bucketName}/*`]
-      },
-      {
         Effect: 'Deny',
         Action: ['name/cos:GetBucket', 'name/cos:GetBucketObjectVersions'],
         Principal: { qcs: ['qcs::cam::anyone:anyone'] },

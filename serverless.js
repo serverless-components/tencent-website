@@ -59,6 +59,12 @@ class Website extends Component {
     await websiteBucket({
       bucket: inputs.bucketName,
       region: inputs.region,
+      acl: {
+        permissions: 'public-read',
+        grantRead: '',
+        grantWrite: '',
+        grantFullControl: ''
+      },
       fromClientRemark: inputs.fromClientRemark || 'tencent-website'
     })
     this.state.bucketName = inputs.bucketName
