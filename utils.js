@@ -13,17 +13,17 @@ const configureBucketForHosting = async (
 ) => {
   let handler
 
-  const cosBucketPolicy = {
-    version: '2.0',
-    Statement: [
-      {
-        Effect: 'Deny',
-        Action: ['name/cos:GetBucket', 'name/cos:GetBucketObjectVersions'],
-        Principal: { qcs: ['qcs::cam::anyone:anyone'] },
-        Resource: [`qcs::cos:${region}:uid/${appid}:${bucketName}/*`]
-      }
-    ]
-  }
+  // const cosBucketPolicy = {
+  //   version: '2.0',
+  //   Statement: [
+  //     {
+  //       Effect: 'Deny',
+  //       Action: ['name/cos:GetBucket', 'name/cos:GetBucketObjectVersions'],
+  //       Principal: { qcs: ['qcs::cam::anyone:anyone'] },
+  //       Resource: [`qcs::cos:${region}:uid/${appid}:${bucketName}/*`]
+  //     }
+  //   ]
+  // }
 
   const staticHostParams = {
     Bucket: bucketName,
@@ -64,16 +64,16 @@ const configureBucketForHosting = async (
       }
     }
 
-    handler = util.promisify(cos.putBucketPolicy.bind(cos))
-    try {
-      await handler({
-        Bucket: bucketName,
-        Policy: JSON.stringify(cosBucketPolicy),
-        Region: region
-      })
-    } catch (e) {
-      throw e
-    }
+    // handler = util.promisify(cos.putBucketPolicy.bind(cos))
+    // try {
+    //   await handler({
+    //     Bucket: bucketName,
+    //     Policy: JSON.stringify(cosBucketPolicy),
+    //     Region: region
+    //   })
+    // } catch (e) {
+    //   throw e
+    // }
 
     handler = util.promisify(cos.putBucketWebsite.bind(cos))
     try {
