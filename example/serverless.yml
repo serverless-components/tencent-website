@@ -14,24 +14,3 @@ inputs:
   region: ap-guangzhou
   bucketName: my-bucket
   protocol: http
-  hosts:
-    - host: anycoder.cn
-  env:
-    API_URL: https://api.com
-  cors:
-    - allowedOrigins:
-        - '*.tencent.com'
-        - '*.qcloud.com'
-      allowedMethods:
-        - PUT
-        - POST
-        - DELETE
-        - HEAD
-      allowedHeaders: '*'
-      maxAgeSeconds: 0
-    - allowedOrigins:
-        - '*'
-      allowedMethods:
-        - GET
-      allowedHeaders: '*'
-      maxAgeSeconds: 0
