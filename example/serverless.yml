@@ -1,0 +1,38 @@
+component: tencent-website@dev
+name: websitedemo
+org: test
+app: websiteApp
+stage: dev
+
+inputs:
+  src:
+    root: ./
+    src: ./src
+    hook: npm run build
+    index: index.html
+    error: index.html
+#    websitePath: ./aaaaa
+  region: ap-guangzhou
+  bucketName: my-bucket
+  protocol: http
+  hosts:
+    - host: anycoder.cn
+  env:
+    API_URL: https://api.com
+  cors:
+    - allowedOrigins:
+        - '*.tencent.com'
+        - '*.qcloud.com'
+      allowedMethods:
+        - PUT
+        - POST
+        - DELETE
+        - HEAD
+      allowedHeaders: '*'
+      maxAgeSeconds: 0
+    - allowedOrigins:
+        - '*'
+      allowedMethods:
+        - GET
+      allowedHeaders: '*'
+      maxAgeSeconds: 0

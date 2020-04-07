@@ -20,4 +20,4 @@ build/
 env.js
 package-lock.json
 test
-tmp/
+yarn.lock
