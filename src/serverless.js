@@ -1,9 +1,8 @@
-const {Component} = require('@serverless/core')
+const { Component } = require('@serverless/core')
 const path = require('path')
-const {Cos, Cdn} = require('tencent-component-toolkit')
+const { Cos, Cdn } = require('tencent-component-toolkit')
 
 class Express extends Component {
-
   getDefaultProtocol(protocols) {
     if (String(protocols).includes('https')) {
       return 'https'
@@ -18,7 +17,7 @@ class Express extends Component {
     const credentials = this.credentials.tencent
 
     // 默认值
-    const region = inputs.region || "ap-guangzhou"
+    const region = inputs.region || 'ap-guangzhou'
 
     const sourceDirectory = await this.unzip(inputs.src)
 
@@ -28,13 +27,15 @@ class Express extends Component {
     // 标准化website inputs
     const websiteInputs = {
       code: {
-        src: inputs.src.websitePath ? path.join(sourceDirectory, inputs.src.websitePath) : sourceDirectory,
+        src: inputs.src.websitePath
+          ? path.join(sourceDirectory, inputs.src.websitePath)
+          : sourceDirectory,
         index: inputs.src.index || 'index.html',
-        error: inputs.src.error || 'error.html',
+        error: inputs.src.error || 'error.html'
       },
       bucket: inputs.bucketName + '-' + credentials.tmpSecrets.appId,
       region: inputs.region || 'ap-guangzhou',
-      protocol: inputs.protocol || 'http',
+      protocol: inputs.protocol || 'http'
     }
     if (inputs.env) {
       websiteInputs.env = inputs.env
@@ -70,7 +71,9 @@ class Express extends Component {
         console.log(cdnInputs)
         tencentCdnOutput = await cdn.deploy(cdnInputs)
         protocol = tencentCdnOutput.https ? 'https' : 'http'
-        cdnResult.push(protocol + '://' + tencentCdnOutput.host + ' (CNAME: ' + tencentCdnOutput.cname + '）')
+        cdnResult.push(
+          protocol + '://' + tencentCdnOutput.host + ' (CNAME: ' + tencentCdnOutput.cname + '）'
+        )
         cdnState.push(tencentCdnOutput)
       }
     }
@@ -82,9 +85,10 @@ class Express extends Component {
 
     await this.save()
     console.log(`Deployed Tencent Website.`)
-    return {"website": this.getDefaultProtocol(websiteInputs.protocol) + "://" + websiteUrl, "host": cdnResult}
-
-
+    return {
+      website: this.getDefaultProtocol(websiteInputs.protocol) + '://' + websiteUrl,
+      host: cdnResult
+    }
   }
 
   async remove(inputs = {}) {
@@ -94,15 +98,15 @@ class Express extends Component {
     const credentials = this.credentials.tencent
 
     // 默认值
-    const region = inputs.region || "ap-guangzhou"
+    const region = inputs.region || 'ap-guangzhou'
 
     // 创建cos对象
     const cos = new Cos(credentials, region)
     await cos.remove(this.state.website)
 
-    if(this.state.cdn){
+    if (this.state.cdn) {
       const cdn = new Cdn(credentials, region)
-      for(let i=0;i<this.state.cdn.length;i++){
+      for (let i = 0; i < this.state.cdn.length; i++) {
         await cdn.remove(this.state.cdn[i])
       }
     }
