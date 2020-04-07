@@ -1,4 +1,4 @@
-component: tencent-website@dev
+component: tencent-website
 name: websitedemo
 org: test
 app: websiteApp
