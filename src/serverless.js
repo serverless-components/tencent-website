@@ -43,10 +43,9 @@ class Express extends Component {
         index: inputs.src.index || 'index.html',
         error: inputs.src.error || 'error.html',
       },
-      bucket: inputs.bucketName,
+      bucket: inputs.bucketName + '-' + userInfo.Response.AppId,
       region: inputs.region || 'ap-guangzhou',
       protocol: inputs.protocol || 'http',
-      appid: userInfo.Response.AppId
     }
     if (inputs.env) {
       websiteInputs.env = inputs.env
@@ -66,7 +65,7 @@ class Express extends Component {
     // 部署CDN
     const cdnResult = []
     const cdnState = []
-    const cosOriginAdd = `${websiteInputs.bucket}-${userInfo.Response.AppId}.cos-website.${websiteInputs.region}.myqcloud.com`
+    const cosOriginAdd = `${websiteInputs.bucket}.cos-website.${websiteInputs.region}.myqcloud.com`
     if (inputs.hosts && inputs.hosts.length > 0) {
       console.log(`Deploying CDN ...`)
       let tencentCdnOutput
