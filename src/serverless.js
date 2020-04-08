@@ -1,18 +1,8 @@
 const {Component} = require('@serverless/core')
 const path = require('path')
-const fs = require('fs')
-const ensureString = require('type/string/ensure')
-const Cam = require('tencent-cloud-sdk').cam
 const {Cos, Cdn} = require('tencent-component-toolkit')
 
 class Express extends Component {
-  async getUserInfo(credentials) {
-    const cam = new Cam(credentials)
-    return await cam.request({
-      Action: 'GetUserAppId',
-      Version: '2019-01-16'
-    })
-  }
 
   getDefaultProtocol(protocols) {
     if (String(protocols).includes('https')) {
@@ -29,7 +19,6 @@ class Express extends Component {
 
     // 默认值
     const region = inputs.region || "ap-guangzhou"
-    const userInfo = await this.getUserInfo(credentials)
 
     const sourceDirectory = await this.unzip(inputs.src)
 
@@ -43,7 +32,7 @@ class Express extends Component {
         index: inputs.src.index || 'index.html',
         error: inputs.src.error || 'error.html',
       },
-      bucket: inputs.bucketName + '-' + userInfo.Response.AppId,
+      bucket: inputs.bucketName + '-' + credentials.tmpSecrets.appId,
       region: inputs.region || 'ap-guangzhou',
       protocol: inputs.protocol || 'http',
     }
@@ -106,7 +95,6 @@ class Express extends Component {
 
     // 默认值
     const region = inputs.region || "ap-guangzhou"
-    const userInfo = await this.getUserInfo(credentials)
 
     // 创建cos对象
     const cos = new Cos(credentials, region)
