@@ -144,7 +144,14 @@ class Express extends Component {
     console.log(`Removing Tencent Webiste ...`)
 
     // 获取腾讯云密钥信息
-    const credentials = this.credentials.tencent
+    if (!this.credentials.tencent.tmpSecrets) {
+      throw new Error('Please add SLS_QcsRole in your tencent account.')
+    }
+    const credentials = {
+      SecretId: this.credentials.tencent.tmpSecrets.TmpSecretId,
+      SecretKey: this.credentials.tencent.tmpSecrets.TmpSecretKey,
+      Token: this.credentials.tencent.tmpSecrets.Token
+    }
 
     // 默认值
     const region = inputs.region || 'ap-guangzhou'
