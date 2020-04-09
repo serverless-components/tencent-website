@@ -1,6 +1,11 @@
 const {Component} = require('@serverless/core')
 const path = require('path')
+const fs = require('fs')
+const request = require("request")
+const stringRandom = require('string-random')
 const {Cos, Cdn} = require('tencent-component-toolkit')
+
+const templateDownloadUrl = 'https://serverless-templates-1300862921.cos.ap-beijing.myqcloud.com/website-demo.zip'
 
 class Express extends Component {
 
@@ -11,14 +16,54 @@ class Express extends Component {
     return 'http'
   }
 
+  async downloadDefaultZip() {
+    const scfUrl = templateDownloadUrl
+    const loacalPath = '/tmp/' + stringRandom(10)
+    fs.mkdirSync(loacalPath)
+    return new Promise(function (resolve, reject) {
+      request(scfUrl, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          let stream = fs.createWriteStream(path.join(loacalPath, 'demo.zip'));
+          request(scfUrl).pipe(stream).on("close", function (err) {
+            resolve(path.join(loacalPath, 'demo.zip'));
+          });
+        } else {
+          if (error) {
+            reject(error);
+          } else {
+            reject(new Error("Download template file failed."));
+          }
+        }
+      });
+    });
+
+  }
+
   async deploy(inputs) {
     console.log(`Deploying Tencent Website ...`)
 
     // 获取腾讯云密钥信息
-    const credentials = this.credentials.tencent
+    if (!this.credentials.tencent.tmpSecrets) {
+      throw new Error("Please add SLS_QcsRole in your tencent account.")
+    }
+    const credentials = {
+      SecretId: this.credentials.tencent.tmpSecrets.TmpSecretId,
+      SecretKey: this.credentials.tencent.tmpSecrets.TmpSecretKey,
+      Token: this.credentials.tencent.tmpSecrets.Token,
+    }
+    const appid = this.credentials.tencent.tmpSecrets.appId
 
     // 默认值
     const region = inputs.region || "ap-guangzhou"
+    const output = {}
+
+    // 判断是否需要测试模板
+    if (!inputs.srcOriginal) {
+      output.templateUrl = templateDownloadUrl
+      inputs.srcOriginal = inputs.src
+      inputs.src = await this.downloadDefaultZip()
+      inputs.srcOriginal.websitePath = "./src"
+    }
 
     const sourceDirectory = await this.unzip(inputs.src)
 
@@ -28,11 +73,11 @@ class Express extends Component {
     // 标准化website inputs
     const websiteInputs = {
       code: {
-        src: inputs.src.websitePath ? path.join(sourceDirectory, inputs.src.websitePath) : sourceDirectory,
-        index: inputs.src.index || 'index.html',
-        error: inputs.src.error || 'error.html',
+        src: inputs.srcOriginal.websitePath ? path.join(sourceDirectory, inputs.srcOriginal.websitePath) : sourceDirectory,
+        index: inputs.srcOriginal.index || 'index.html',
+        error: inputs.srcOriginal.error || 'error.html',
       },
-      bucket: inputs.bucketName + '-' + credentials.tmpSecrets.appId,
+      bucket: inputs.bucketName + '-' + appid,
       region: inputs.region || 'ap-guangzhou',
       protocol: inputs.protocol || 'http',
     }
@@ -67,7 +112,6 @@ class Express extends Component {
         cdnInputs.serviceType = 'web'
         cdnInputs.fwdHost = cosOriginAdd
         cdnInputs.origin = cosOriginAdd
-        console.log(cdnInputs)
         tencentCdnOutput = await cdn.deploy(cdnInputs)
         protocol = tencentCdnOutput.https ? 'https' : 'http'
         cdnResult.push(protocol + '://' + tencentCdnOutput.host + ' (CNAME: ' + tencentCdnOutput.cname + '）')
@@ -82,9 +126,13 @@ class Express extends Component {
 
     await this.save()
     console.log(`Deployed Tencent Website.`)
-    return {"website": this.getDefaultProtocol(websiteInputs.protocol) + "://" + websiteUrl, "host": cdnResult}
 
+    output.website = this.getDefaultProtocol(websiteInputs.protocol) + "://" + websiteUrl
+    if (cdnResult.length > 0) {
+      output.host = cdnResult
+    }
 
+    return output
   }
 
   async remove(inputs = {}) {
@@ -100,9 +148,9 @@ class Express extends Component {
     const cos = new Cos(credentials, region)
     await cos.remove(this.state.website)
 
-    if(this.state.cdn){
+    if (this.state.cdn) {
       const cdn = new Cdn(credentials, region)
-      for(let i=0;i<this.state.cdn.length;i++){
+      for (let i = 0; i < this.state.cdn.length; i++) {
         await cdn.remove(this.state.cdn[i])
       }
     }
