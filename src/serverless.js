@@ -1,15 +1,12 @@
 const { Component } = require('@serverless/core')
 const path = require('path')
-<<<<<<< HEAD
 const fs = require('fs')
-const request = require("request")
+const request = require('request')
 const stringRandom = require('string-random')
-const {Cos, Cdn} = require('tencent-component-toolkit')
-=======
 const { Cos, Cdn } = require('tencent-component-toolkit')
->>>>>>> origin/v2
 
-const templateDownloadUrl = 'https://serverless-templates-1300862921.cos.ap-beijing.myqcloud.com/website-demo.zip'
+const templateDownloadUrl =
+  'https://serverless-templates-1300862921.cos.ap-beijing.myqcloud.com/website-demo.zip'
 
 class Express extends Component {
   getDefaultProtocol(protocols) {
@@ -23,23 +20,24 @@ class Express extends Component {
     const scfUrl = templateDownloadUrl
     const loacalPath = '/tmp/' + stringRandom(10)
     fs.mkdirSync(loacalPath)
-    return new Promise(function (resolve, reject) {
-      request(scfUrl, function (error, response, body) {
+    return new Promise(function(resolve, reject) {
+      request(scfUrl, function(error, response) {
         if (!error && response.statusCode == 200) {
-          let stream = fs.createWriteStream(path.join(loacalPath, 'demo.zip'));
-          request(scfUrl).pipe(stream).on("close", function (err) {
-            resolve(path.join(loacalPath, 'demo.zip'));
-          });
+          const stream = fs.createWriteStream(path.join(loacalPath, 'demo.zip'))
+          request(scfUrl)
+            .pipe(stream)
+            .on('close', function() {
+              resolve(path.join(loacalPath, 'demo.zip'))
+            })
         } else {
           if (error) {
-            reject(error);
+            reject(error)
           } else {
-            reject(new Error("Download template file failed."));
+            reject(new Error('下载失败，返回状态码不是200，状态码：' + response.statusCode))
           }
         }
-      });
-    });
-
+      })
+    })
   }
 
   async deploy(inputs) {
@@ -47,18 +45,17 @@ class Express extends Component {
 
     // 获取腾讯云密钥信息
     if (!this.credentials.tencent.tmpSecrets) {
-      throw new Error("Please add SLS_QcsRole in your tencent account.")
+      throw new Error('Please add SLS_QcsRole in your tencent account.')
     }
     const credentials = {
       SecretId: this.credentials.tencent.tmpSecrets.TmpSecretId,
       SecretKey: this.credentials.tencent.tmpSecrets.TmpSecretKey,
-      Token: this.credentials.tencent.tmpSecrets.Token,
+      Token: this.credentials.tencent.tmpSecrets.Token
     }
     const appid = this.credentials.tencent.tmpSecrets.appId
 
     // 默认值
-<<<<<<< HEAD
-    const region = inputs.region || "ap-guangzhou"
+    const region = inputs.region || 'ap-guangzhou'
     const output = {}
 
     // 判断是否需要测试模板
@@ -66,11 +63,8 @@ class Express extends Component {
       output.templateUrl = templateDownloadUrl
       inputs.srcOriginal = inputs.src
       inputs.src = await this.downloadDefaultZip()
-      inputs.srcOriginal.websitePath = "./src"
+      inputs.srcOriginal.websitePath = './src'
     }
-=======
-    const region = inputs.region || 'ap-guangzhou'
->>>>>>> origin/v2
 
     const sourceDirectory = await this.unzip(inputs.src)
 
@@ -80,17 +74,11 @@ class Express extends Component {
     // 标准化website inputs
     const websiteInputs = {
       code: {
-<<<<<<< HEAD
-        src: inputs.srcOriginal.websitePath ? path.join(sourceDirectory, inputs.srcOriginal.websitePath) : sourceDirectory,
-        index: inputs.srcOriginal.index || 'index.html',
-        error: inputs.srcOriginal.error || 'error.html',
-=======
-        src: inputs.src.websitePath
-          ? path.join(sourceDirectory, inputs.src.websitePath)
+        src: inputs.srcOriginal.websitePath
+          ? path.join(sourceDirectory, inputs.srcOriginal.websitePath)
           : sourceDirectory,
-        index: inputs.src.index || 'index.html',
-        error: inputs.src.error || 'error.html'
->>>>>>> origin/v2
+        index: inputs.srcOriginal.index || 'index.html',
+        error: inputs.srcOriginal.error || 'error.html'
       },
       bucket: inputs.bucketName + '-' + appid,
       region: inputs.region || 'ap-guangzhou',
@@ -143,20 +131,13 @@ class Express extends Component {
 
     await this.save()
     console.log(`Deployed Tencent Website.`)
-<<<<<<< HEAD
 
-    output.website = this.getDefaultProtocol(websiteInputs.protocol) + "://" + websiteUrl
+    output.website = this.getDefaultProtocol(websiteInputs.protocol) + '://' + websiteUrl
     if (cdnResult.length > 0) {
       output.host = cdnResult
     }
 
     return output
-=======
-    return {
-      website: this.getDefaultProtocol(websiteInputs.protocol) + '://' + websiteUrl,
-      host: cdnResult
-    }
->>>>>>> origin/v2
   }
 
   async remove(inputs = {}) {
