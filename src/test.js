@@ -1,14 +1,17 @@
-const {Component} = require('@serverless/core')
+const { Component } = require('@serverless/core')
 const path = require('path')
+<<<<<<< HEAD
 const fs = require('fs')
 const request = require("request")
 const stringRandom = require('string-random')
 const {Cos, Cdn} = require('tencent-component-toolkit')
+=======
+const { Cos, Cdn } = require('tencent-component-toolkit')
+>>>>>>> origin/v2
 
 const templateDownloadUrl = 'https://serverless-templates-1300862921.cos.ap-beijing.myqcloud.com/website-demo.zip'
 
 class Express extends Component {
-
   getDefaultProtocol(protocols) {
     if (String(protocols).includes('https')) {
       return 'https'
@@ -54,6 +57,7 @@ class Express extends Component {
     const appid = this.credentials.tencent.tmpSecrets.appId
 
     // 默认值
+<<<<<<< HEAD
     const region = inputs.region || "ap-guangzhou"
     const output = {}
 
@@ -64,6 +68,9 @@ class Express extends Component {
       inputs.src = await this.downloadDefaultZip()
       inputs.srcOriginal.websitePath = "./src"
     }
+=======
+    const region = inputs.region || 'ap-guangzhou'
+>>>>>>> origin/v2
 
     const sourceDirectory = await this.unzip(inputs.src)
 
@@ -73,13 +80,21 @@ class Express extends Component {
     // 标准化website inputs
     const websiteInputs = {
       code: {
+<<<<<<< HEAD
         src: inputs.srcOriginal.websitePath ? path.join(sourceDirectory, inputs.srcOriginal.websitePath) : sourceDirectory,
         index: inputs.srcOriginal.index || 'index.html',
         error: inputs.srcOriginal.error || 'error.html',
+=======
+        src: inputs.src.websitePath
+          ? path.join(sourceDirectory, inputs.src.websitePath)
+          : sourceDirectory,
+        index: inputs.src.index || 'index.html',
+        error: inputs.src.error || 'error.html'
+>>>>>>> origin/v2
       },
       bucket: inputs.bucketName + '-' + appid,
       region: inputs.region || 'ap-guangzhou',
-      protocol: inputs.protocol || 'http',
+      protocol: inputs.protocol || 'http'
     }
     if (inputs.env) {
       websiteInputs.env = inputs.env
@@ -114,7 +129,9 @@ class Express extends Component {
         cdnInputs.origin = cosOriginAdd
         tencentCdnOutput = await cdn.deploy(cdnInputs)
         protocol = tencentCdnOutput.https ? 'https' : 'http'
-        cdnResult.push(protocol + '://' + tencentCdnOutput.host + ' (CNAME: ' + tencentCdnOutput.cname + '）')
+        cdnResult.push(
+          protocol + '://' + tencentCdnOutput.host + ' (CNAME: ' + tencentCdnOutput.cname + '）'
+        )
         cdnState.push(tencentCdnOutput)
       }
     }
@@ -126,6 +143,7 @@ class Express extends Component {
 
     await this.save()
     console.log(`Deployed Tencent Website.`)
+<<<<<<< HEAD
 
     output.website = this.getDefaultProtocol(websiteInputs.protocol) + "://" + websiteUrl
     if (cdnResult.length > 0) {
@@ -133,6 +151,12 @@ class Express extends Component {
     }
 
     return output
+=======
+    return {
+      website: this.getDefaultProtocol(websiteInputs.protocol) + '://' + websiteUrl,
+      host: cdnResult
+    }
+>>>>>>> origin/v2
   }
 
   async remove(inputs = {}) {
@@ -142,7 +166,7 @@ class Express extends Component {
     const credentials = this.credentials.tencent
 
     // 默认值
-    const region = inputs.region || "ap-guangzhou"
+    const region = inputs.region || 'ap-guangzhou'
 
     // 创建cos对象
     const cos = new Cos(credentials, region)
