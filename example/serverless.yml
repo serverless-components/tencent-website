@@ -1,4 +1,4 @@
-component: website@dev
+component: website
 name: websitedemo
 org: test
 app: websiteApp
