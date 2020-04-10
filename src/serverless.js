@@ -61,7 +61,7 @@ class Express extends Component {
     // 判断是否需要测试模板
     if (!inputs.srcOriginal) {
       output.templateUrl = templateDownloadUrl
-      inputs.srcOriginal = inputs.src
+      inputs.srcOriginal = inputs.src || {}
       inputs.src = await this.downloadDefaultZip()
       inputs.srcOriginal.websitePath = './src'
     }
