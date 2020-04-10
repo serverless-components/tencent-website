@@ -45,7 +45,9 @@ class Express extends Component {
 
     // 获取腾讯云密钥信息
     if (!this.credentials.tencent.tmpSecrets) {
-      throw new Error('Please add SLS_QcsRole in your tencent account.')
+      throw new Error(
+        "Couldn't get your SecretId/Key, Please add SLS_QcsRole For Serverless Framework or Update Serverless Framework CLI(At least 1.67.3)"
+      )
     }
     const credentials = {
       SecretId: this.credentials.tencent.tmpSecrets.TmpSecretId,
@@ -145,7 +147,9 @@ class Express extends Component {
 
     // 获取腾讯云密钥信息
     if (!this.credentials.tencent.tmpSecrets) {
-      throw new Error('Please add SLS_QcsRole in your tencent account.')
+      throw new Error(
+        "Couldn't get your SecretId/Key, Please add SLS_QcsRole For Serverless Framework or Update Serverless Framework CLI(At least 1.67.3)"
+      )
     }
     const credentials = {
       SecretId: this.credentials.tencent.tmpSecrets.TmpSecretId,

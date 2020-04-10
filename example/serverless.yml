@@ -5,6 +5,11 @@ app: websiteApp
 stage: dev
 
 inputs:
+  src:
+    root: ./
+    hook: npm run build
+    index: index.html
+    error: index.html
   region: ap-guangzhou
   bucketName: my-bucket
   protocol: http
