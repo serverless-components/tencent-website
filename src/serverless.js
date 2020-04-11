@@ -89,8 +89,8 @@ class Express extends Component {
     if (inputs.env) {
       websiteInputs.env = inputs.env
     }
-    if (inputs.envPath) {
-      websiteInputs.envPath = inputs.envPath
+    if (inputs.srcOriginal.envPath) {
+      websiteInputs.code.envPath = path.join(websiteInputs.code.src, inputs.srcOriginal.envPath)
     }
     if (inputs.cors) {
       websiteInputs.cors = inputs.cors
