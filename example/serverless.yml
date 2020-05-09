@@ -6,8 +6,7 @@ stage: dev
 
 inputs:
   src:
-    root: ./
-    hook: npm run build
+    src: ./
     index: index.html
     error: index.html
   region: ap-guangzhou
