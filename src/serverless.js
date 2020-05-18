@@ -4,11 +4,25 @@ const fs = require('fs')
 const request = require('request')
 const stringRandom = require('string-random')
 const { Cos, Cdn } = require('tencent-component-toolkit')
+const CONFIGS = require('./config')
 
-const templateDownloadUrl =
-  'https://serverless-templates-1300862921.cos.ap-beijing.myqcloud.com/website-demo.zip'
+class ServerlessComponent extends Component {
+  getCredentials() {
+    const { tmpSecrets } = this.credentials.tencent
 
-class Express extends Component {
+    if (!tmpSecrets || !tmpSecrets.TmpSecretId) {
+      throw new Error(
+        'Cannot get secretId/Key, your account could be sub-account or does not have access, please check if SLS_QcsRole role exists in your account, and visit https://console.cloud.tencent.com/cam to bind this role to your account.'
+      )
+    }
+
+    return {
+      SecretId: tmpSecrets.TmpSecretId,
+      SecretKey: tmpSecrets.TmpSecretKey,
+      Token: tmpSecrets.Token
+    }
+  }
+
   getDefaultProtocol(protocols) {
     if (String(protocols).includes('https')) {
       return 'https'
@@ -17,7 +31,7 @@ class Express extends Component {
   }
 
   async downloadDefaultZip() {
-    const scfUrl = templateDownloadUrl
+    const scfUrl = CONFIGS.templateUrl
     const loacalPath = '/tmp/' + stringRandom(10)
     fs.mkdirSync(loacalPath)
     return new Promise(function(resolve, reject) {
@@ -33,36 +47,64 @@ class Express extends Component {
           if (error) {
             reject(error)
           } else {
-            reject(new Error('下载失败，返回状态码不是200，状态码：' + response.statusCode))
+            reject(new Error(`Download error, status code: ${response.statusCode}`))
           }
         }
       })
     })
   }
 
+  async deployCdn({ credentials, domains = [], cosOrigin, originPullProtocol }) {
+    console.log(`Deploying CDN ...`)
+    let tencentCdnOutput
+    let protocol
+    let cdnInputs
+    const cdnResult = []
+    const outputs = []
+    const cdn = new Cdn(credentials)
+    for (let i = 0; i < domains.length; i++) {
+      cdnInputs = domains[i]
+      cdnInputs.domain = cdnInputs.host
+      cdnInputs.serviceType = 'web'
+      cdnInputs.origin = {
+        origins: [cosOrigin],
+        originType: 'cos',
+        originPullProtocol: originPullProtocol
+      }
+
+      if (cdnInputs.autoRefesh) {
+        cdnInputs.refreshCdn = {
+          urls: [`http://${cdnInputs.domain}`, `https://${cdnInputs.domain}`]
+        }
+      }
+      tencentCdnOutput = await cdn.deploy(cdnInputs)
+      protocol = tencentCdnOutput.https ? 'https' : 'http'
+      cdnResult.push(
+        protocol + '://' + tencentCdnOutput.domain + ' (CNAME: ' + tencentCdnOutput.cname + '）'
+      )
+      outputs.push(tencentCdnOutput)
+    }
+    return {
+      outputs,
+      cdnResult
+    }
+  }
+
   async deploy(inputs) {
     console.log(`Deploying Tencent Website ...`)
 
-    // 获取腾讯云密钥信息
-    if (!this.credentials.tencent.tmpSecrets) {
-      throw new Error(
-        'Cannot get secretId/Key, your account could be sub-account or does not have access, please check if SLS_QcsRole role exists in your account, and visit https://console.cloud.tencent.com/cam to bind this role to your account.'
-      )
-    }
-    const credentials = {
-      SecretId: this.credentials.tencent.tmpSecrets.TmpSecretId,
-      SecretKey: this.credentials.tencent.tmpSecrets.TmpSecretKey,
-      Token: this.credentials.tencent.tmpSecrets.Token
-    }
+    const credentials = this.getCredentials()
     const appid = this.credentials.tencent.tmpSecrets.appId
 
     // 默认值
-    const region = inputs.region || 'ap-guangzhou'
-    const output = {}
+    const region = inputs.region || CONFIGS.region
+    const output = {
+      region
+    }
 
     // 判断是否需要测试模板
     if (!inputs.srcOriginal) {
-      output.templateUrl = templateDownloadUrl
+      output.templateUrl = CONFIGS.templateUrl
       inputs.srcOriginal = inputs.src || {}
       inputs.src = await this.downloadDefaultZip()
       inputs.srcOriginal.websitePath = './src'
@@ -79,12 +121,12 @@ class Express extends Component {
         src: inputs.srcOriginal.websitePath
           ? path.join(sourceDirectory, inputs.srcOriginal.websitePath)
           : sourceDirectory,
-        index: inputs.srcOriginal.index || 'index.html',
-        error: inputs.srcOriginal.error || 'error.html'
+        index: inputs.srcOriginal.index || CONFIGS.indexPage,
+        error: inputs.srcOriginal.error || CONFIGS.errorPage
       },
       bucket: inputs.bucketName + '-' + appid,
-      region: inputs.region || 'ap-guangzhou',
-      protocol: inputs.protocol || 'http'
+      region,
+      protocol: inputs.protocol || CONFIGS.protocol
     }
     if (inputs.env) {
       websiteInputs.env = inputs.env
@@ -101,64 +143,39 @@ class Express extends Component {
     // 部署网站
     const websiteUrl = await cos.website(websiteInputs)
 
-    // 部署CDN
-    const cdnResult = []
-    const cdnState = []
-    const cosOriginAdd = `${websiteInputs.bucket}.cos-website.${websiteInputs.region}.myqcloud.com`
-    if (inputs.hosts && inputs.hosts.length > 0) {
-      console.log(`Deploying CDN ...`)
-      let tencentCdnOutput
-      let protocol
-      let cdnInputs
-      const cdn = new Cdn(credentials, region)
-      for (let i = 0; i < inputs.hosts.length; i++) {
-        cdnInputs = inputs.hosts[i]
-        cdnInputs.hostType = 'cos'
-        cdnInputs.serviceType = 'web'
-        cdnInputs.fwdHost = cosOriginAdd
-        cdnInputs.origin = cosOriginAdd
-        tencentCdnOutput = await cdn.deploy(cdnInputs)
-        protocol = tencentCdnOutput.https ? 'https' : 'http'
-        cdnResult.push(
-          protocol + '://' + tencentCdnOutput.host + ' (CNAME: ' + tencentCdnOutput.cname + '）'
-        )
-        cdnState.push(tencentCdnOutput)
-      }
+    output.website = this.getDefaultProtocol(websiteInputs.protocol) + '://' + websiteUrl
+    this.state = {
+      region,
+      website: websiteInputs
     }
 
-    this.state = {
-      website: websiteInputs,
-      cdn: cdnState
+    const cosOriginAdd = `${websiteInputs.bucket}.cos-website.${websiteInputs.region}.myqcloud.com`
+    if (inputs.hosts && inputs.hosts.length > 0) {
+      const deployCdnRes = await this.deployCdn({
+        credentials,
+        domains: inputs.hosts,
+        cosOrigin: cosOriginAdd,
+        originPullProtocol: websiteInputs.protocol
+      })
+
+      output.hosts = deployCdnRes.cdnResult
+      this.state.cdn = deployCdnRes.outputs
     }
 
     await this.save()
     console.log(`Deployed Tencent Website.`)
 
-    output.website = this.getDefaultProtocol(websiteInputs.protocol) + '://' + websiteUrl
-    if (cdnResult.length > 0) {
-      output.host = cdnResult
-    }
-
     return output
   }
 
+  // eslint-disable-next-line
   async remove(inputs = {}) {
-    console.log(`Removing Tencent Webiste ...`)
+    console.log(`Removing Webiste ...`)
 
-    // 获取腾讯云密钥信息
-    if (!this.credentials.tencent.tmpSecrets) {
-      throw new Error(
-        'Cannot get secretId/Key, your account could be sub-account or does not have access, please check if SLS_QcsRole role exists in your account, and visit https://console.cloud.tencent.com/cam to bind this role to your account.'
-      )
-    }
-    const credentials = {
-      SecretId: this.credentials.tencent.tmpSecrets.TmpSecretId,
-      SecretKey: this.credentials.tencent.tmpSecrets.TmpSecretKey,
-      Token: this.credentials.tencent.tmpSecrets.Token
-    }
+    const credentials = this.getCredentials()
 
     // 默认值
-    const region = inputs.region || 'ap-guangzhou'
+    const { region } = this.state
 
     // 创建cos对象
     const cos = new Cos(credentials, region)
@@ -172,8 +189,8 @@ class Express extends Component {
     }
 
     this.state = {}
-    console.log(`Removed Tencent Website`)
+    console.log(`Removed Website`)
   }
 }
 
-module.exports = Express
+module.exports = ServerlessComponent

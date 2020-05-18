@@ -1,9 +1,9 @@
 name: website
-version: 0.0.4
-author: anycodes
-org: anycodes
+version: 0.0.0-dev
+author: Tencent Cloud, Inc.
+org: Tencent Cloud, Inc.
 description: Deploys Tencent Website.
-keywords: tencent, serverless, Website
+keywords: tencent, serverless, website
 repo: https://github.com/serverless-components/tencent-website/tree/v2
 readme: https://github.com/serverless-components/tencent-website/tree/v2
 license: MIT
