@@ -18,32 +18,47 @@ inputs:
   hosts:
     - host: anycoder.cn
     - host: abc.com
-      fullUrl: on
+      async: true
+      autoRefesh: true
       cache:
-        - type: 0
-          rule: all
-          time: 1000
-        - type: 0
-          rule: all
-          time: 1000
-      cacheMode: simple
-      refer:
-        - type: 1
-          list:
-            - 'qq.baidu.com'
-            - '*.baidu.com'
-      accessIp:
-        type: 1
-        list:
+        simpleCache:
+          followOrigin: on
+          cacheRules:
+            - cacheType: all
+              cacheContents:
+                - '*'
+              cacheTime: 1000
+      cacheKey:
+        fullUrlCache: on
+      referer:
+        switch: on
+        refererRules:
+          - ruleType: all
+            rulePaths:
+              - '*'
+            refererType: blacklist
+            allowEmpty: true
+            referers:
+              - 'qq.baidu.com'
+              - '*.baidu.com'
+      ipFilter:
+        switch: on
+        filterType: blacklist
+        filters:
           - '1.2.3.4'
           - '2.3.4.5'
+      forceRedirect:
+        switch: on
+        redirectType: https
+        redirectStatusCode: 301
       https:
-        certId: 123
-        cert: 123
-        privateKey: 123
-        http2: off
-        httpsType: 2
-        forceSwitch: -2
+        switch: on
+        http2: on
+        certInfo:
+          certId: 'abc'
+          # certificate: 'xxx'
+          # privateKey: 'xxx'
+
   env:
     API_URL: https://api.com
   cors:
