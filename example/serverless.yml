@@ -1,7 +1,7 @@
 name: websitedemo
 org: test
 app: websiteApp
-component: website@dev
+component: website
 stage: dev
 
 inputs:
@@ -12,17 +12,3 @@ inputs:
   region: ap-guangzhou
   bucketName: my-bucket
   protocol: https
-  hosts:
-    - host: fullstack.yugasun.com
-      autoRefesh: true
-      async: false
-      area: overseas
-      forceRedirect:
-        switch: on
-        redirectType: https
-        redirectStatusCode: 301
-      https:
-        switch: on
-        http2: on
-        certInfo:
-          certId: 'Z67aCPcj'
