@@ -72,16 +72,23 @@ class ServerlessComponent extends Component {
         originPullProtocol: originPullProtocol
       }
 
-      if (cdnInputs.autoRefesh) {
+      if (cdnInputs.autoRefresh) {
         cdnInputs.refreshCdn = {
           urls: [`http://${cdnInputs.domain}`, `https://${cdnInputs.domain}`]
         }
       }
       tencentCdnOutput = await cdn.deploy(cdnInputs)
       protocol = tencentCdnOutput.https ? 'https' : 'http'
-      cdnResult.push(
-        protocol + '://' + tencentCdnOutput.domain + ' (CNAME: ' + tencentCdnOutput.cname + '）'
-      )
+      const result = {
+        domain: `${protocol}://${tencentCdnOutput.domain}`,
+        cname: tencentCdnOutput.cname
+      }
+      if (cdnInputs.onlyRefresh !== true) {
+        if (cdnInputs.refreshCdn && cdnInputs.refreshCdn.urls) {
+          result.refreshUrls = cdnInputs.refreshCdn.urls
+        }
+        cdnResult.push(result)
+      }
       outputs.push(tencentCdnOutput)
     }
     return {
@@ -158,7 +165,7 @@ class ServerlessComponent extends Component {
         originPullProtocol: websiteInputs.protocol
       })
 
-      output.hosts = deployCdnRes.cdnResult
+      output.cdnDomains = deployCdnRes.cdnResult
       this.state.cdn = deployCdnRes.outputs
     }
 
@@ -176,15 +183,19 @@ class ServerlessComponent extends Component {
 
     // 默认值
     const { region } = this.state
+    const stateCdn = this.state.cdn
 
     // 创建cos对象
     const cos = new Cos(credentials, region)
     await cos.remove(this.state.website)
 
-    if (this.state.cdn) {
+    if (stateCdn) {
       const cdn = new Cdn(credentials, region)
-      for (let i = 0; i < this.state.cdn.length; i++) {
-        await cdn.remove(this.state.cdn[i])
+      for (let i = 0; i < stateCdn.length; i++) {
+        const curCdnConf = stateCdn[i]
+        if (curCdnConf.created === true) {
+          await cdn.remove(curCdnConf)
+        }
       }
     }
 
