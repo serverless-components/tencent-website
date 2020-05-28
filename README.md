@@ -93,21 +93,17 @@ stage: dev # (可选) 用于区分环境信息，默认值是 dev
 
 inputs:
   src:
-    root: ./
     src: ./src
-    hook: npm run build
     index: index.html
-    websitePath: ./
+    # dist: ./dist
+    # hook: npm run build
+    # websitePath: ./
   region: ap-guangzhou
   bucketName: my-bucket
-  protocol: http
-  hosts:
-    - host: anycoder.cn
-      https:
-        certId: 123
+  protocol: https
 ```
 
-点此查看[全量配置及配置说明](https://github.com/serverless-components/tencent-website/blob/v2/doc/serverless.yaml)
+点此查看[全量配置及配置说明](https://github.com/serverless-components/tencent-website/blob/v2/docs/configure.md)
 
 当你根据该配置文件更新配置字段后，再次运行 `serverless deploy` 或者 `serverless` 就可以更新配置到云端。
 
