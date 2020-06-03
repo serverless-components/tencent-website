@@ -1,10 +1,10 @@
 name: website
-version: 0.0.6
+version: 0.0.8
 author: Tencent Cloud, Inc.
 org: Tencent Cloud, Inc.
 description: Deploys Tencent Website.
 keywords: tencent, serverless, website
 repo: https://github.com/serverless-components/tencent-website/tree/v2
-readme: https://github.com/serverless-components/tencent-website/tree/v2
+readme: https://github.com/serverless-components/tencent-website/tree/v2/README.md
 license: MIT
 main: ./src

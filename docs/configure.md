@@ -18,7 +18,6 @@ inputs:
     # hook: npm run build
     index: index.html
     error: index.html
-    # websitePath: ./
   region: ap-guangzhou
   bucketName: my-bucket
   protocol: http
@@ -103,14 +102,13 @@ inputs:
 
 ### 执行目录
 
-| 参数名称    | 是否必选 |   默认值   | 描述                                                         |
-| ----------- | :------: | :--------: | :----------------------------------------------------------- |
-| src         |    是    |            | 你构建的项目代码目录。                                       |
-| websitePath |    否    |            | 网站根目录。                                                 |
-| dist        |    否    |            | 钩子脚本执行构建后，输出的目录。如果配置 `hook`， 此参数必填 |
-| hook        |    否    |            | 钩子脚本。在你项目代码上传之前执行。                         |
-| index       |    否    | index.html | 网站 index 页面                                              |
-| error       |    否    | error.html | 网站 error 页面                                              |
+| 参数名称 | 是否必选 |   默认值   | 描述                                                         |
+| -------- | :------: | :--------: | :----------------------------------------------------------- |
+| src      |    是    |            | 你构建的项目代码目录。                                       |
+| dist     |    否    |            | 钩子脚本执行构建后，输出的目录。如果配置 `hook`， 此参数必填 |
+| hook     |    否    |            | 钩子脚本。在你项目代码上传之前执行。                         |
+| index    |    否    | index.html | 网站 index 页面                                              |
+| error    |    否    | error.html | 网站 error 页面                                              |
 
 ### 跨域配置
 

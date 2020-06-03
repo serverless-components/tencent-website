@@ -1,10 +1,7 @@
 const { Component } = require('@serverless/core')
-const path = require('path')
-const fs = require('fs')
-const request = require('request')
-const stringRandom = require('string-random')
 const { Cos, Cdn } = require('tencent-component-toolkit')
 const CONFIGS = require('./config')
+const { prepareInputs } = require('./utils')
 
 class ServerlessComponent extends Component {
   getCredentials() {
@@ -28,30 +25,6 @@ class ServerlessComponent extends Component {
       return 'https'
     }
     return 'http'
-  }
-
-  async downloadDefaultZip() {
-    const scfUrl = CONFIGS.templateUrl
-    const loacalPath = '/tmp/' + stringRandom(10)
-    fs.mkdirSync(loacalPath)
-    return new Promise(function(resolve, reject) {
-      request(scfUrl, function(error, response) {
-        if (!error && response.statusCode == 200) {
-          const stream = fs.createWriteStream(path.join(loacalPath, 'demo.zip'))
-          request(scfUrl)
-            .pipe(stream)
-            .on('close', function() {
-              resolve(path.join(loacalPath, 'demo.zip'))
-            })
-        } else {
-          if (error) {
-            reject(error)
-          } else {
-            reject(new Error(`Download error, status code: ${response.statusCode}`))
-          }
-        }
-      })
-    })
   }
 
   async deployCdn({ credentials, domains = [], cosOrigin, originPullProtocol }) {
@@ -101,49 +74,24 @@ class ServerlessComponent extends Component {
     console.log(`Deploying Tencent Website ...`)
 
     const credentials = this.getCredentials()
-    const appid = this.credentials.tencent.tmpSecrets.appId
 
-    // 默认值
-    const region = inputs.region || CONFIGS.region
+    // 标准化website inputs
+    const websiteInputs = await prepareInputs(this, inputs)
+
+    const { region } = websiteInputs
+
     const output = {
       region
     }
 
-    // 判断是否需要测试模板
-    if (!inputs.srcOriginal) {
+    if (websiteInputs.useDefault) {
       output.templateUrl = CONFIGS.templateUrl
-      inputs.srcOriginal = inputs.src || {}
-      inputs.src = await this.downloadDefaultZip()
-      inputs.srcOriginal.websitePath = './src'
     }
 
-    const sourceDirectory = await this.unzip(inputs.src)
+    inputs.srcOriginal = inputs.srcOriginal || {}
 
     // 创建cos对象
     const cos = new Cos(credentials, region)
-
-    // 标准化website inputs
-    const websiteInputs = {
-      code: {
-        src: inputs.srcOriginal.websitePath
-          ? path.join(sourceDirectory, inputs.srcOriginal.websitePath)
-          : sourceDirectory,
-        index: inputs.srcOriginal.index || CONFIGS.indexPage,
-        error: inputs.srcOriginal.error || CONFIGS.errorPage
-      },
-      bucket: inputs.bucketName + '-' + appid,
-      region,
-      protocol: inputs.protocol || CONFIGS.protocol
-    }
-    if (inputs.env) {
-      websiteInputs.env = inputs.env
-    }
-    if (inputs.srcOriginal.envPath) {
-      websiteInputs.code.envPath = path.join(websiteInputs.code.src, inputs.srcOriginal.envPath)
-    }
-    if (inputs.cors) {
-      websiteInputs.cors = inputs.cors
-    }
 
     console.log(`Deploying Website ...`)
 

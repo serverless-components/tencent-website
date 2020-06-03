@@ -1,6 +1,6 @@
 const CONFIGS = {
   templateUrl:
-    'https://serverless-templates-1300862921.cos.ap-beijing.myqcloud.com/express-demo.zip',
+    'https://serverless-templates-1300862921.cos.ap-beijing.myqcloud.com/website-demo.zip',
   region: 'ap-guangzhou',
   indexPage: 'index.html',
   errorPage: 'error.html',

@@ -1,7 +1,7 @@
 {
   "name": "@serverless/website",
-  "version": "0.0.6",
-  "main": "./serverless.js",
+  "version": "0.0.8",
+  "main": "./src/serverless.js",
   "publishConfig": {
     "access": "public"
   },
