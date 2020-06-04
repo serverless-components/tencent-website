@@ -128,7 +128,7 @@ inputs:
 | ----------- | -------- | ------- | --------------------------------------------------------------------------------- |
 | async       | 否       | `false` | 是否为异步操作，如果为 true，则不会等待 CDN 创建或更新成功再返回，                |
 | autoRefresh | 否       | `false` | 是否自动刷新预热 CDN                                                              |
-| onlyRefesh  | 否       | `false` | 是否只刷新预热 CDN，如果为 `true`，那么只进行刷新预热操作，不会更新 CDN 配置      |
+| onlyRefresh | 否       | `false` | 是否只刷新预热 CDN，如果为 `true`，那么只进行刷新预热操作，不会更新 CDN 配置      |
 | refreshCdn  | 否       |         | 刷新 CDN 相关配置，参考 [refreshCdn](#refreshCdn)                                 |
 | host        | 是       |         | 需要接入的 CDN 域名。                                                             |
 | host        | 是       |         | 需要接入的 CDN 域名。                                                             |
