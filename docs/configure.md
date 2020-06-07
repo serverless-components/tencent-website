@@ -133,7 +133,6 @@ inputs:
 | refreshCdn  | 否       |         | 刷新 CDN 相关配置，参考 [refreshCdn](#refreshCdn)                                 |
 | pushCdn     | 否       |         | 预热 CDN 相关配置，参考 [pushCdn](#pushCdn)                                       |
 | host        | 是       |         | 需要接入的 CDN 域名。                                                             |
-| host        | 是       |         | 需要接入的 CDN 域名。                                                             |
 | https       | 否       |         | Https 加速配置，参考：https://cloud.tencent.com/document/api/228/30987#Https      |
 | cacheKey    | 否       |         | 节点缓存键配置，参考：https://cloud.tencent.com/document/api/228/30987#CacheKey   |
 | cache       | 否       |         | 缓存过期时间配置，参考： https://cloud.tencent.com/document/api/228/30987#Cache   |
