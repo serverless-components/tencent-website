@@ -1,7 +1,4 @@
 const { generateId, getServerlessSdk } = require('./utils')
-const execSync = require('child_process').execSync
-const path = require('path')
-const axios = require('axios')
 
 // set enough timeout for deployment to finish
 jest.setTimeout(60000)
@@ -23,6 +20,7 @@ const instanceYaml = {
 process.env.SERVERLESS_PLATFORM_VENDOR = 'tencent'
 process.env.TENCENT_SECRET_ID = ''
 process.env.TENCENT_SECRET_KEY = ''
+process.env.SERVERLESS_PLATFORM_STAGE = 'dev'
 
 // get credentials from process.env but need to init empty credentials object
 const credentials = {
