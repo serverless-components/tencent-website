@@ -1,7 +1,7 @@
 const { generateId, getServerlessSdk } = require('./utils')
 
 // set enough timeout for deployment to finish
-jest.setTimeout(60000)
+jest.setTimeout(300000)
 
 // the yaml file we're testing against
 const instanceYaml = {
@@ -12,8 +12,8 @@ const instanceYaml = {
   stage: 'dev',
   inputs: {
     src: './example',
-    bucketName: 'my-bucket'
-    // region: 'ap-guangzhou'
+    bucketName: 'my-bucket',
+    region: 'ap-guangzhou'
   }
 }
 
@@ -25,23 +25,18 @@ const credentials = {
 // get serverless construct sdk
 const sdk = getServerlessSdk(instanceYaml.org)
 
-// clean up the instance after tests
-afterAll(async () => {
-  await sdk.remove(instanceYaml, credentials)
-})
-
 it('should successfully deploy website app', async () => {
   const instance = await sdk.deploy(instanceYaml, { tencent: {} })
 
   expect(instance).toBeDefined()
   expect(instance.instanceName).toEqual(instanceYaml.name)
   expect(instance.outputs.website).toBeDefined()
+  expect(instance.outputs.region).toEqual(instanceYaml.inputs.region)
 })
 
 it('should successfully remove website app', async () => {
   await sdk.remove(instanceYaml, credentials)
   result = await sdk.getInstance(instanceYaml.org, instanceYaml.stage, instanceYaml.app, instanceYaml.name)
 
-  // remove action won't delete the service cause the apigw have the api binded
   expect(result.instance.instanceStatus).toEqual('inactive')
 })
