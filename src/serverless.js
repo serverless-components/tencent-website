@@ -73,7 +73,7 @@ class ServerlessComponent extends Component {
   }
 
   async deploy(inputs) {
-    console.log(`Deploying Tencent Website ...`)
+    console.log(`Deploying Tencent ${CONFIGS.compFullname}`)
 
     const credentials = this.getCredentials()
 
@@ -85,6 +85,10 @@ class ServerlessComponent extends Component {
     const output = {
       region
     }
+    this.state = {
+      region,
+      website: websiteInputs
+    }
 
     if (websiteInputs.useDefault) {
       output.templateUrl = CONFIGS.templateUrl
@@ -92,19 +96,10 @@ class ServerlessComponent extends Component {
 
     inputs.srcOriginal = inputs.srcOriginal || {}
 
-    // 创建cos对象
     const cos = new Cos(credentials, region)
-
-    console.log(`Deploying Website ...`)
-
-    // 部署网站
     const websiteUrl = await cos.website(websiteInputs)
 
     output.website = this.getDefaultProtocol(websiteInputs.protocol) + '://' + websiteUrl
-    this.state = {
-      region,
-      website: websiteInputs
-    }
 
     const cosOriginAdd = `${websiteInputs.bucket}.cos-website.${websiteInputs.region}.myqcloud.com`
     if (inputs.hosts && inputs.hosts.length > 0) {
@@ -115,30 +110,29 @@ class ServerlessComponent extends Component {
         originPullProtocol: websiteInputs.protocol
       })
 
-      output.cdnDomains = deployCdnRes.cdnResult
       this.state.cdn = deployCdnRes.outputs
+      output.cdnDomains = deployCdnRes.cdnResult
     }
 
     await this.save()
-    console.log(`Deployed Tencent Website.`)
+    console.log(`Deployed Tencent ${CONFIGS.compFullname} success`)
 
     return output
   }
 
   // eslint-disable-next-line
   async remove(inputs = {}) {
-    console.log(`Removing Webiste ...`)
+    console.log(`Removing ${CONFIGS.compFullname}`)
 
     const credentials = this.getCredentials()
 
     // 默认值
     const { region } = this.state
-    const stateCdn = this.state.cdn
 
-    // 创建cos对象
     const cos = new Cos(credentials, region)
     await cos.remove(this.state.website)
 
+    const stateCdn = this.state.cdn
     if (stateCdn) {
       const cdn = new Cdn(credentials, region)
       for (let i = 0; i < stateCdn.length; i++) {
@@ -150,7 +144,7 @@ class ServerlessComponent extends Component {
     }
 
     this.state = {}
-    console.log(`Removed Website`)
+    console.log(`Removed ${CONFIGS.compFullname}`)
   }
 }
 

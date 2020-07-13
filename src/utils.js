@@ -53,6 +53,8 @@ const prepareInputs = async (instance, inputs) => {
   }
   console.log(`Files unzipped into ${sourceDirectory}...`)
 
+  const region = inputs.region || CONFIGS.region
+
   return {
     useDefault: !code.src,
     code: {
@@ -62,9 +64,9 @@ const prepareInputs = async (instance, inputs) => {
       envPath: path.join(sourceDirectory, envPath)
     },
     env: inputs.env,
-    bucket: `${inputs.bucketName}-${appId}`,
-    region: inputs.region || CONFIGS.region,
-    protocol: inputs.protocol || CONFIGS.protocolc,
+    bucket: `${inputs.bucketName || `sls-website-${region}-${generateId()}`}-${appId}`,
+    region: region,
+    protocol: inputs.protocol || CONFIGS.protocol,
     cors: inputs.cors
   }
 }
