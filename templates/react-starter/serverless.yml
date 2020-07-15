@@ -1,0 +1,16 @@
+name: react-starter
+component: website
+org: "Tencent Cloud, Inc."
+description: Deploys a serverless React website on Tencent Cloud
+keywords: tencent cloud, serverless, website, frontend, vue
+repo: https://github.com/serverless-components/tencent-website/tree/v2/templates/react-starter
+readme: https://github.com/serverless-components/v2/blob/new-templates/templates/react-starter/README.md
+license: MIT
+
+src:
+  src: ./
+  exclude:
+    - .env
+    - '.git/**'
+    - '**/node_modules'
+    - '**/package-lock.json'

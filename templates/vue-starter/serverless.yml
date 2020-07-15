@@ -1,0 +1,16 @@
+name: vue-starter
+component: website
+org: "Tencent Cloud, Inc."
+description: Deploys a serverless Vue website on Tencent Cloud
+keywords: tencent cloud, serverless, website, frontend, vue
+repo: https://github.com/serverless-components/tencent-website/tree/v2/templates/vue-starter
+readme: https://github.com/serverless-components/tencent-website/blob/v2/templates/vue-starter/README.md
+license: MIT
+
+src:
+  src: ./
+  exclude:
+    - .env
+    - '.git/**'
+    - '**/node_modules'
+    - '**/package-lock.json'
