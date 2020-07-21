@@ -2,7 +2,7 @@ name: website
 version: 0.0.9
 author: Tencent Cloud, Inc.
 org: Tencent Cloud, Inc.
-description: Deploys Tencent Website.
+description: Deploy a static website on Tencent Cloud.
 keywords: tencent, serverless, website
 repo: https://github.com/serverless-components/tencent-website
 readme: https://github.com/serverless-components/tencent-website/tree/master/README.md
