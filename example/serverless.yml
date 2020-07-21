@@ -1,8 +1,8 @@
-name: websitedemo
-org: test
-app: websiteApp
-component: website
+org: orgDemo
+app: appDemo
 stage: dev
+component: website
+name: websiteDemo
 
 inputs:
   src:
