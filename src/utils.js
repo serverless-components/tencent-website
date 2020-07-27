@@ -33,7 +33,6 @@ const getCodeZipPath = async (instance, code) => {
 }
 
 const prepareInputs = async (instance, inputs) => {
-  console.log('inputs', inputs)
   let code = inputs.src || ''
   code =
     typeof code === 'string'
