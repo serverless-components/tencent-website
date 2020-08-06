@@ -22,7 +22,6 @@ inputs:
   bucketName: my-bucket
   protocol: http
   hosts:
-    - host: anycoder.cn
     - host: abc.com
       async: true
       area: mainland
