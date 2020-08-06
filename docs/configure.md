@@ -27,6 +27,11 @@ inputs:
       area: mainland
       autoRefresh: true
       onlyRefresh: false
+      https:
+        switch: on
+        http2: on
+        certInfo:
+          certId: 'abc'
       cache:
         simpleCache:
           followOrigin: on
@@ -58,13 +63,6 @@ inputs:
         switch: on
         redirectType: https
         redirectStatusCode: 301
-      https:
-        switch: on
-        http2: on
-        certInfo:
-          certId: 'abc'
-          # certificate: 'xxx'
-          # privateKey: 'xxx'
   env:
     API_URL: https://api.com
   cors:
