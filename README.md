@@ -48,7 +48,7 @@ $ mkdir tencent-website && cd tencent-website
 通过如下命令和模板链接，快速创建一个静态网站托管应用：
 
 ```
-$ serverless create --template-url https://github.com/serverless-components/tencent-website/tree/v2/example
+$ serverless create --template-url https://github.com/serverless-components/tencent-website/tree/master/example
 $ cd example
 ```
 
@@ -103,7 +103,7 @@ inputs:
   protocol: https
 ```
 
-点此查看[全量配置及配置说明](https://github.com/serverless-components/tencent-website/blob/v2/docs/configure.md)
+点此查看[全量配置及配置说明](https://github.com/serverless-components/tencent-website/blob/master/docs/configure.md)
 
 当你根据该配置文件更新配置字段后，再次运行 `serverless deploy` 或者 `serverless` 就可以更新配置到云端。
 
