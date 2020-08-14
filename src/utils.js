@@ -11,7 +11,7 @@ const generateId = () =>
     .substring(6)
 
 const getCodeZipPath = async (instance, code) => {
-  console.log(`Packaging ${CONFIGS.frameworkFullname} application...`)
+  console.log(`Packaging ${CONFIGS.compFullname} application...`)
 
   // unzip source zip file
   let zipPath
@@ -20,7 +20,7 @@ const getCodeZipPath = async (instance, code) => {
     const downloadPath = `/tmp/${generateId()}`
     const filename = 'template'
 
-    console.log(`Installing Default ${CONFIGS.frameworkFullname} App...`)
+    console.log(`Installing Default ${CONFIGS.compFullname} App...`)
     await download(CONFIGS.templateUrl, downloadPath, {
       filename: `${filename}.zip`
     })
@@ -30,6 +30,14 @@ const getCodeZipPath = async (instance, code) => {
   }
 
   return zipPath
+}
+
+const removeAppid = (str, appid) => {
+  const suffix = `-${appid}`
+  if (!str || str.indexOf(suffix) === -1) {
+    return str
+  }
+  return str.slice(0, -suffix.length)
 }
 
 const prepareInputs = async (instance, inputs) => {
@@ -53,6 +61,8 @@ const prepareInputs = async (instance, inputs) => {
   console.log(`Files unzipped into ${sourceDirectory}...`)
 
   const region = inputs.region || CONFIGS.region
+  const bucketName =
+    removeAppid(inputs.bucketName, appId) || `sls-website-${region}-${generateId()}`
 
   return {
     useDefault: !code.src,
@@ -63,7 +73,7 @@ const prepareInputs = async (instance, inputs) => {
       envPath: path.join(sourceDirectory, envPath)
     },
     env: inputs.env,
-    bucket: `${inputs.bucketName || `sls-website-${region}-${generateId()}`}-${appId}`,
+    bucket: `${bucketName}-${appId}`,
     region: region,
     protocol: inputs.protocol || CONFIGS.protocol,
     cors: inputs.cors
