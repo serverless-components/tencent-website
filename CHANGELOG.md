@@ -1,3 +1,10 @@
+## [0.0.12](https://github.com/serverless-components/tencent-website/compare/v0.0.11...v0.0.12) (2020-08-27)
+
+
+### Bug Fixes
+
+* update deps ([05100ba](https://github.com/serverless-components/tencent-website/commit/05100ba477f13d95b8fafe345960e968236bab56))
+
 ## [0.0.11](https://github.com/serverless-components/tencent-website/compare/v0.0.10...v0.0.11) (2020-08-26)
 
 
