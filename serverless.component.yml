@@ -1,5 +1,5 @@
 name: website
-version: 0.0.13
+version: 0.0.14
 author: 'Tencent Cloud, Inc.'
 org: 'Tencent Cloud, Inc.'
 description: Deploy a static website on Tencent Cloud.
