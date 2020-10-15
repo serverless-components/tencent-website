@@ -65,6 +65,7 @@ const prepareInputs = async (instance, inputs) => {
     removeAppid(inputs.bucketName, appId) || `sls-website-${region}-${generateId()}`
 
   return {
+    replace: inputs.replace,
     useDefault: !code.src,
     code: {
       src: sourceDirectory,

@@ -4,9 +4,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "description": "Easily deploy serverless websites (e.g. Vue.js, React, static) to Tencent Cloud with the Serverless Framework",
   "scripts": {
-    "int-test": "jest ./tests/integration.test.js --testEnvironment node",
-    "test": "npm run lint && npm run prettier && npm run int-test",
+    "test": "jest ./tests/integration.test.js --testEnvironment node",
     "commitlint": "commitlint -f HEAD@{15}",
     "lint": "eslint --ext .js,.ts,.tsx .",
     "lint:fix": "eslint --fix --ext .js,.ts,.tsx .",
@@ -57,5 +57,26 @@
     "lint-staged": "^10.0.8",
     "prettier": "^1.19.1",
     "semantic-release": "^17.0.4"
-  }
+  },
+  "directories": {
+    "doc": "docs",
+    "example": "example",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/serverless-components/tencent-website.git"
+  },
+  "keywords": [
+    "serverless-website",
+    "serverless",
+    "website",
+    "serverless-framework",
+    "serverless-components",
+    "tencent-cloud"
+  ],
+  "bugs": {
+    "url": "https://github.com/serverless-components/tencent-website/issues"
+  },
+  "homepage": "https://github.com/serverless-components/tencent-website#readme"
 }
