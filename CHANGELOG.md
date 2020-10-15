@@ -1,3 +1,10 @@
+# [0.1.0](https://github.com/serverless-components/tencent-website/compare/v0.0.15...v0.1.0) (2020-10-15)
+
+
+### Features
+
+* support replace deployment ([c05c223](https://github.com/serverless-components/tencent-website/commit/c05c223988f7eb4e7e70af5656d44a295e66c260))
+
 ## [0.0.15](https://github.com/serverless-components/tencent-website/compare/v0.0.14...v0.0.15) (2020-10-13)
 
 
