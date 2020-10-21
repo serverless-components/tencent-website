@@ -39,17 +39,10 @@ $ npm install -g serverless
 
 ### 2. 创建
 
-创建并进入一个全新目录：
+通过如下命令和模板链接，快速创建一个 Express 应用：
 
-```
-$ mkdir tencent-website && cd tencent-website
-```
-
-通过如下命令和模板链接，快速创建一个静态网站托管应用：
-
-```
-$ serverless create --template-url https://github.com/serverless-components/tencent-website/tree/master/example
-$ cd example
+```bash
+$ serverless init website-starter
 ```
 
 下载完毕后，目录结构如下所示：
