@@ -39,7 +39,7 @@ $ npm install -g serverless
 
 ### 2. 创建
 
-通过如下命令，快速创建一个静态网站托管应用：
+通过如下命令，快速创建一个静态网站托管应用
 
 ```bash
 $ serverless init website-starter --name example
