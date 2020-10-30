@@ -21,13 +21,13 @@ inputs:
   region: ap-guangzhou
   bucketName: my-bucket
   protocol: http
-  replace: false # 是否替换式部署
+  replace: false # 是否覆盖式部署
   hosts:
     - host: abc.com
-      async: true
+      async: false # 是否同步等待 CDN 配置。配置为 false 时，参数 autoRefresh 自动刷新才会生效，如果关联多域名时，为防止超时建议配置为 true。
       area: mainland
-      autoRefresh: true
-      onlyRefresh: false
+      autoRefresh: true #开启自动 CDN 刷新，用于快速更新和同步加速域名中展示的站点内容
+      onlyRefresh: false #建议首次部署后，将此参数配置为 true，即忽略其他 CDN 配置，只进行刷新操作
       https:
         switch: on
         http2: on
