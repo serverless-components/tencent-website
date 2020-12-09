@@ -58,13 +58,13 @@ const prepareInputs = async (instance, inputs) => {
   if (!code.src) {
     sourceDirectory = `${sourceDirectory}/src`
   }
-  console.log(`Files unzipped into ${sourceDirectory}...`)
+  console.log(`Files unzipped into ${sourceDirectory}`)
 
   const region = inputs.region || CONFIGS.region
   const bucketName =
     removeAppid(inputs.bucketName, appId) || `sls-website-${region}-${generateId()}`
 
-  return {
+  const websiteInputs = {
     replace: inputs.replace,
     useDefault: !code.src,
     code: {
@@ -79,6 +79,18 @@ const prepareInputs = async (instance, inputs) => {
     protocol: inputs.protocol || CONFIGS.protocol,
     cors: inputs.cors
   }
+
+  // auto setup acl for public-read
+  if (inputs.autoSetupAcl !== false) {
+    websiteInputs.acl = CONFIGS.acl
+  }
+
+  // auto setup policy for public read
+  if (inputs.autoSetupPolicy === true) {
+    websiteInputs.policy = CONFIGS.getPolicy(region, bucketName, appId)
+  }
+
+  return websiteInputs
 }
 
 module.exports = {
