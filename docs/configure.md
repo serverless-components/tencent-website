@@ -24,6 +24,8 @@ inputs:
   replace: false # 是否覆盖式部署
   autoSetupAcl: true # 自动配置 bucket 访问权限为 ”公有读私有写“
   autoSetupPolicy: false # 自动配置 bucket 的 Policy 权限为 ”所有用户资源可读“
+  env: # 配置前端环境变量
+    API_URL: https://api.com
   hosts:
     - host: abc.com
       async: false # 是否同步等待 CDN 配置。配置为 false 时，参数 autoRefresh 自动刷新才会生效，如果关联多域名时，为防止超时建议配置为 true。
@@ -66,8 +68,6 @@ inputs:
         switch: on
         redirectType: https
         redirectStatusCode: 301
-  env:
-    API_URL: https://api.com
   cors:
     - allowedOrigins:
         - '*.tencent.com'
@@ -98,7 +98,7 @@ inputs:
 | region          |  否  | string          | `ap-guangzhou` | 代码上传所在的 cos 区域。区。                                                             |
 | replace         |  否  | boolean         |    `false`     | 是否是替换式部署，如果为 `true`，部署时将 `先删除对应 bucket 的所有旧文件`。              |
 | protocol        |  否  | string          |    `https`     | 请求协议。`https` 或 `http`                                                               |
-| env             |  否  | object          |                | 环境变量参数文件。会将 env 下配置的参数写入 env.js 文件中，将该文件打包上传到你的代码里。 |
+| env             |  否  | [Env](#Env)     |                | 环境变量参数文件。会将 env 下配置的参数写入 env.js 文件中，将该文件打包上传到你的代码里。 |
 | cors            |  否  | [Cors](#Cors)[] |                | 跨域访问配置                                                                              |
 | hosts           |  否  | [Cdn](#Cdn)[]   |                | CND 加速域名配置                                                                          |
 | autoSetupAcl    |  否  | boolean         |     `true`     | 自动配置 bucket 访问权限为 ”公有读私有写“                                                 |
@@ -177,3 +177,23 @@ global：全球加速
 | 参数名称 | 必选 | 类型     | 默认 | 描述                |
 | -------- | :--: | :------- | ---- | ------------------- |
 | urls     |  否  | string[] | []   | 需要预热的 CDN URLs |
+
+### Env
+
+环境变量参数文件。会将 env 下配置的参数写入 env.js 文件中，将该文件打包上传到你的代码里。
+
+比如配置了:
+
+```yaml
+env:
+  API_URL: https://api.com
+```
+
+那么静态项目根目录下生成的 `env.js` 文件内容如下：
+
+```js
+window.env = {}
+window.env.API_URL = 'https://api.com'
+```
+
+让后我们可以在前端项目中给所有的请求 URL 添加 `window.env.API_URL` 前缀，通常在全栈应用中，会使用到。比如在部署完后端服务后会生产后端服务网关 `url`，然后我们将上面的的 `API_URL` 赋值为后端服务的 `url`，就可以做到无需手动引入修改接口链接了。具体使用请参考 [全栈应用案例](https://github.com/serverless-components/tencent-examples/tree/master/fullstack)
