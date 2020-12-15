@@ -6,7 +6,7 @@
   },
   "description": "Easily deploy serverless websites (e.g. Vue.js, React, static) to Tencent Cloud with the Serverless Framework",
   "scripts": {
-    "test": "jest ./tests/integration.test.js --testEnvironment node",
+    "test": "jest",
     "commitlint": "commitlint -f HEAD@{15}",
     "lint": "eslint --ext .js,.ts,.tsx .",
     "lint:fix": "eslint --fix --ext .js,.ts,.tsx .",
@@ -46,6 +46,7 @@
     "@semantic-release/release-notes-generator": "^9.0.1",
     "@serverless/platform-client-china": "^1.0.19",
     "@ygkit/secure": "0.0.3",
+    "axios": "^0.21.0",
     "babel-eslint": "^10.1.0",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
