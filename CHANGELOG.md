@@ -1,3 +1,10 @@
+## [0.1.1](https://github.com/serverless-components/tencent-website/compare/v0.1.0...v0.1.1) (2020-12-15)
+
+
+### Bug Fixes
+
+* support autoSetupAcl,autoSetupPolicy config ([#32](https://github.com/serverless-components/tencent-website/issues/32)) ([c19e0c4](https://github.com/serverless-components/tencent-website/commit/c19e0c4ed4b2ca6581c49599281afcfa27be1f11))
+
 # [0.1.0](https://github.com/serverless-components/tencent-website/compare/v0.0.15...v0.1.0) (2020-10-15)
 
 
