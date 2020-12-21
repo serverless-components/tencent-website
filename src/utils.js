@@ -64,7 +64,7 @@ const prepareInputs = async (instance, inputs) => {
   const bucketName =
     removeAppid(inputs.bucketName, appId) || `sls-website-${region}-${generateId()}`
 
-  const websiteInputs = {
+  const websiteInputs = Object.assign(inputs, {
     replace: inputs.replace,
     useDefault: !code.src,
     code: {
@@ -78,7 +78,7 @@ const prepareInputs = async (instance, inputs) => {
     region: region,
     protocol: inputs.protocol || CONFIGS.protocol,
     cors: inputs.cors
-  }
+  })
 
   // auto setup acl for public-read
   if (inputs.autoSetupAcl !== false) {
