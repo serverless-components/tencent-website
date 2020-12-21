@@ -22,6 +22,7 @@ inputs:
   bucketName: my-bucket
   protocol: http
   replace: false # 是否覆盖式部署
+  disableErrorStatus: false # 是否禁用错误码，默认 false
   autoSetupAcl: true # 自动配置 bucket 访问权限为 ”公有读私有写“
   autoSetupPolicy: false # 自动配置 bucket 的 Policy 权限为 ”所有用户资源可读“
   env: # 配置前端环境变量
@@ -91,18 +92,19 @@ inputs:
 
 主要参数描述
 
-| 参数名称        | 必选 | 类型            |     默认值     | 描述                                                                                      |
-| --------------- | :--: | :-------------- | :------------: | :---------------------------------------------------------------------------------------- |
-| src             |  是  | [Src](#Src)[]   |                | 该项目的代码信息，参数参考执行目录                                                        |
-| bucketName      |  是  | string          |                | Bucket 名称。 不允许大写字母。如果你不加 AppId 后缀，则默认自动会为你加上。               |
-| region          |  否  | string          | `ap-guangzhou` | 代码上传所在的 cos 区域。区。                                                             |
-| replace         |  否  | boolean         |    `false`     | 是否是替换式部署，如果为 `true`，部署时将 `先删除对应 bucket 的所有旧文件`。              |
-| protocol        |  否  | string          |    `https`     | 请求协议。`https` 或 `http`                                                               |
-| env             |  否  | [Env](#Env)     |                | 环境变量参数文件。会将 env 下配置的参数写入 env.js 文件中，将该文件打包上传到你的代码里。 |
-| cors            |  否  | [Cors](#Cors)[] |                | 跨域访问配置                                                                              |
-| hosts           |  否  | [Cdn](#Cdn)[]   |                | CND 加速域名配置                                                                          |
-| autoSetupAcl    |  否  | boolean         |     `true`     | 自动配置 bucket 访问权限为 ”公有读私有写“                                                 |
-| autoSetupPolicy |  否  | boolean         |    `false`     | 自动配置 bucket 的 Policy 权限为 ”所有用户资源可读“                                       |
+| 参数名称           | 必选 | 类型            |     默认值     | 描述                                                                                      |
+| ------------------ | :--: | :-------------- | :------------: | :---------------------------------------------------------------------------------------- |
+| src                |  是  | [Src](#Src)[]   |                | 该项目的代码信息，参数参考执行目录                                                        |
+| bucketName         |  是  | string          |                | Bucket 名称。 不允许大写字母。如果你不加 AppId 后缀，则默认自动会为你加上。               |
+| region             |  否  | string          | `ap-guangzhou` | 代码上传所在的 cos 区域。区。                                                             |
+| replace            |  否  | boolean         |    `false`     | 是否是替换式部署，如果为 `true`，部署时将 `先删除对应 bucket 的所有旧文件`。              |
+| protocol           |  否  | string          |    `https`     | 请求协议。`https` 或 `http`                                                               |
+| env                |  否  | [Env](#Env)     |                | 环境变量参数文件。会将 env 下配置的参数写入 env.js 文件中，将该文件打包上传到你的代码里。 |
+| cors               |  否  | [Cors](#Cors)[] |                | 跨域访问配置                                                                              |
+| hosts              |  否  | [Cdn](#Cdn)[]   |                | CND 加速域名配置                                                                          |
+| autoSetupAcl       |  否  | boolean         |     `true`     | 自动配置 bucket 访问权限为 ”公有读私有写“                                                 |
+| autoSetupPolicy    |  否  | boolean         |    `false`     | 自动配置 bucket 的 Policy 权限为 ”所有用户资源可读“                                       |
+| disableErrorStatus |  否  | boolean         |    `false`     | 是否禁用错误码，默认 false，不存在文件会返回 404；如果禁用，就会返回 200                  |
 
 > 针对 COS 静态资源托管，通常需要配置所有用户公有读私有写，website 组件因此默认通过配置 `autoSetupAcl` 为 `true`，来帮助用户自动配置访问权限为 `公有读私有写`，由于 COS 针对账号的 ACL 配置条数有 1000 限制，当子账号很多的情况下，通过 `autoSetupAcl` 来配置 ACL 可能超过上限。此时用户可以配置 `autoSetupAcl` 为 `false`，同时配置 `autoSetupPolicy` 为 `true`，来解决此问题。
 
