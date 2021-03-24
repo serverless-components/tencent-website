@@ -1,3 +1,10 @@
+## [0.1.3](https://github.com/serverless-components/tencent-website/compare/v0.1.2...v0.1.3) (2021-03-24)
+
+
+### Bug Fixes
+
+* flush more than 1000 files bucket ([#35](https://github.com/serverless-components/tencent-website/issues/35)) ([a376529](https://github.com/serverless-components/tencent-website/commit/a3765293843a425cd96beb8a53476c00308eb329))
+
 ## [0.1.2](https://github.com/serverless-components/tencent-website/compare/v0.1.1...v0.1.2) (2020-12-22)
 
 
