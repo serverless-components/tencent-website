@@ -2,6 +2,14 @@ const path = require('path')
 const axios = require('axios')
 const { generateId, getServerlessSdk } = require('./lib/utils')
 
+const appId = process.env.TENCENT_APP_ID
+const credentials = {
+  tencent: {
+    SecretId: process.env.TENCENT_SECRET_ID,
+    SecretKey: process.env.TENCENT_SECRET_KEY
+  }
+}
+
 const instanceYaml = {
   org: 'orgDemo',
   app: 'appDemo',
@@ -19,14 +27,7 @@ const instanceYaml = {
   }
 }
 
-const credentials = {
-  tencent: {
-    SecretId: process.env.TENCENT_SECRET_ID,
-    SecretKey: process.env.TENCENT_SECRET_KEY,
-  }
-}
-
-const sdk = getServerlessSdk(instanceYaml.org)
+const sdk = getServerlessSdk(instanceYaml.org, appId)
 
 it('should deploy success', async () => {
   const instance = await sdk.deploy(instanceYaml, credentials)
@@ -37,14 +38,14 @@ it('should deploy success', async () => {
   expect(instance.outputs.region).toEqual(instanceYaml.inputs.region)
   // exist page
   const { data } = await axios.get(instance.outputs.website)
-  expect(data).toContain('Serverless Framework');
+  expect(data).toContain('Serverless');
 
   // not exist page
   try {
     await axios.get(`${instance.outputs.website}/error.html`)
   } catch (e) {
     const { response } = e
-    expect(response.data).toContain('Serverless Framework');
+    expect(response.data).toContain('Serverless');
     expect(response.status).toBe(404)
   }
 })
@@ -59,10 +60,10 @@ it('should update success', async () => {
   expect(instance.outputs.region).toEqual(instanceYaml.inputs.region)
   // exist page
   const { data } = await axios.get(instance.outputs.website)
-  expect(data).toContain('Serverless Framework');
+  expect(data).toContain('Serverless');
   // not exist page
   const res = await axios.get(`${instance.outputs.website}/error.html`)
-  expect(res.data).toContain('Serverless Framework');
+  expect(res.data).toContain('Serverless');
   expect(res.status).toBe(200)
 })
 
