@@ -22,6 +22,7 @@ inputs:
   bucketName: my-bucket
   protocol: http
   replace: false # 是否覆盖式部署
+  ignoreHtmlExt: false # 是否是否忽略 html 扩展名，默认 false
   disableErrorStatus: false # 是否禁用错误码，默认 false
   autoSetupAcl: true # 自动配置 bucket 访问权限为 ”公有读私有写“
   autoSetupPolicy: false # 自动配置 bucket 的 Policy 权限为 ”所有用户资源可读“
@@ -105,6 +106,7 @@ inputs:
 | autoSetupAcl       |  否  | boolean         |     `true`     | 自动配置 bucket 访问权限为 ”公有读私有写“                                                 |
 | autoSetupPolicy    |  否  | boolean         |    `false`     | 自动配置 bucket 的 Policy 权限为 ”所有用户资源可读“                                       |
 | disableErrorStatus |  否  | boolean         |    `false`     | 是否禁用错误码，默认 false，不存在文件会返回 404；如果禁用，就会返回 200                  |
+| ignoreHtmlExt      |  否  | boolean         |    `false`     | 是否忽略 html 扩展名，默认 false                                                          |
 
 > 针对 COS 静态资源托管，通常需要配置所有用户公有读私有写，website 组件因此默认通过配置 `autoSetupAcl` 为 `true`，来帮助用户自动配置访问权限为 `公有读私有写`，由于 COS 针对账号的 ACL 配置条数有 1000 限制，当子账号很多的情况下，通过 `autoSetupAcl` 来配置 ACL 可能超过上限。此时用户可以配置 `autoSetupAcl` 为 `false`，同时配置 `autoSetupPolicy` 为 `true`，来解决此问题。
 
