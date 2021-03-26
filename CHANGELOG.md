@@ -1,3 +1,10 @@
+## [0.1.4](https://github.com/serverless-components/tencent-website/compare/v0.1.3...v0.1.4) (2021-03-26)
+
+
+### Bug Fixes
+
+* support ignoreHtmlExt, close [#36](https://github.com/serverless-components/tencent-website/issues/36) ([c86009d](https://github.com/serverless-components/tencent-website/commit/c86009d849bd28acd865a907496372d47e086813))
+
 ## [0.1.3](https://github.com/serverless-components/tencent-website/compare/v0.1.2...v0.1.3) (2021-03-24)
 
 
