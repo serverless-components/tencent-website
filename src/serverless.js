@@ -22,6 +22,10 @@ class ServerlessComponent extends Component {
     }
   }
 
+  getAppId() {
+    return this.credentials.tencent.tmpSecrets.appId
+  }
+
   getDefaultProtocol(protocols) {
     if (String(protocols).includes('https')) {
       return 'https'
@@ -87,6 +91,7 @@ class ServerlessComponent extends Component {
     }
     this.state = {
       region,
+      bucket: websiteInputs.bucket,
       website: websiteInputs
     }
 
