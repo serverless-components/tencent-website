@@ -22,7 +22,7 @@ const instanceYaml = {
       index: 'index.html',
       error: 'index.html'
     },
-    bucketName: 'my-bucket',
+    bucketName: 'website-integration-test',
     region: 'ap-guangzhou',
   }
 }

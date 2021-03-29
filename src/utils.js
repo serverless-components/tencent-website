@@ -41,6 +41,7 @@ const removeAppid = (str, appid) => {
 }
 
 const prepareInputs = async (instance, inputs) => {
+  const { state } = instance
   let code = inputs.src || ''
   code =
     typeof code === 'string'
@@ -51,8 +52,8 @@ const prepareInputs = async (instance, inputs) => {
           ...code
         }
 
-  const zipPath = await getCodeZipPath(this, code)
-  const { appId } = instance.credentials.tencent.tmpSecrets
+  const zipPath = await getCodeZipPath(instance, code)
+  const appId = instance.getAppId()
   const envPath = (inputs.srcOriginal && inputs.srcOriginal.envPath) || './'
   let sourceDirectory = await instance.unzip(zipPath)
   if (!code.src) {
@@ -62,7 +63,7 @@ const prepareInputs = async (instance, inputs) => {
 
   const region = inputs.region || CONFIGS.region
   const bucketName =
-    removeAppid(inputs.bucketName, appId) || `sls-website-${region}-${generateId()}`
+    removeAppid(inputs.bucketName || state.bucket, appId) || `sls-website-${region}-${generateId()}`
 
   const websiteInputs = Object.assign(inputs, {
     replace: inputs.replace,
