@@ -146,6 +146,10 @@ TENCENT_SECRET_ID=123
 TENCENT_SECRET_KEY=123
 ```
 
+## FAQ
+
+[参考](./docs/faq.md)
+
 ## License
 
 MIT License
