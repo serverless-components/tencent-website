@@ -1,7 +1,7 @@
 app: appDemo
 stage: dev
 
-component: website@dev
+component: website
 name: websiteDemo
 
 inputs:

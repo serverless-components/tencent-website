@@ -184,7 +184,7 @@ global：全球加速
 
 ### Env
 
-环境变量参数文件。会将 env 下配置的参数写入 env.js 文件中，将该文件打包上传到你的代码里。
+环境变量参数。serverless 部署时会将 `env` 下配置的参数写入 `env.js` 文件中，将该文件打包上传到相对于 `src` 的 `envPath` 目录，默认为 `src` 指定目录。
 
 比如配置了:
 
@@ -200,4 +200,4 @@ window.env = {}
 window.env.API_URL = 'https://api.com'
 ```
 
-让后我们可以在前端项目中给所有的请求 URL 添加 `window.env.API_URL` 前缀，通常在全栈应用中，会使用到。比如在部署完后端服务后会生产后端服务网关 `url`，然后我们将上面的的 `API_URL` 赋值为后端服务的 `url`，就可以做到无需手动引入修改接口链接了。具体使用请参考 [全栈应用案例](https://github.com/serverless-components/tencent-examples/tree/master/fullstack)
+然后，我们可以在前端项目中给所有的请求 URL 添加 `window.env.API_URL` 前缀，通常在全栈应用中，会使用到。比如在部署完后端服务后会生产后端服务网关 `url`，然后我们将上面的的 `API_URL` 赋值为后端服务的 `url`，就可以做到无需手动引入修改接口链接了。具体使用请参考 [全栈应用案例](https://github.com/serverless-components/tencent-examples/tree/master/fullstack)
