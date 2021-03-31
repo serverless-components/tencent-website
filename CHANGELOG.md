@@ -1,3 +1,16 @@
+# [0.2.0](https://github.com/serverless-components/tencent-website/compare/v0.1.4...v0.2.0) (2021-03-31)
+
+
+### Bug Fixes
+
+* change bucketName to bucket ([fa0674a](https://github.com/serverless-components/tencent-website/commit/fa0674a145674da42e6d93b565b489cb16dced2b))
+* update deps ([22d59d3](https://github.com/serverless-components/tencent-website/commit/22d59d3b8c9172b283c9001d67bf9ec85c12b9dc))
+
+
+### Features
+
+* suppport cache bucket name in state ([968b74b](https://github.com/serverless-components/tencent-website/commit/968b74b00896b2c998f5f5670a47062da88d38e6))
+
 ## [0.1.4](https://github.com/serverless-components/tencent-website/compare/v0.1.3...v0.1.4) (2021-03-26)
 
 
