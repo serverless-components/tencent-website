@@ -19,7 +19,7 @@ inputs:
     index: index.html
     error: index.html
   region: ap-guangzhou
-  bucketName: website-demo
+  bucket: website-demo
   protocol: https
   # env 配置
   env:
@@ -53,7 +53,7 @@ inputs:
     index: index.html
     error: index.html
   region: ap-guangzhou
-  bucketName: website-demo
+  bucket: website-demo
   protocol: https
 ```
 
