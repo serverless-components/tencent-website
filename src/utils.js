@@ -63,7 +63,8 @@ const prepareInputs = async (instance, inputs) => {
 
   const region = inputs.region || CONFIGS.region
   const bucketName =
-    removeAppid(inputs.bucketName || state.bucket, appId) || `sls-website-${region}-${generateId()}`
+    removeAppid(inputs.bucketName || inputs.bucket || state.bucket, appId) ||
+    `sls-website-${region}-${generateId()}`
 
   const websiteInputs = Object.assign(inputs, {
     replace: inputs.replace,

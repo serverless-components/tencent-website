@@ -19,7 +19,7 @@ inputs:
     index: index.html
     error: index.html
   region: ap-guangzhou
-  bucketName: my-bucket
+  bucket: my-bucket
   protocol: http
   replace: false # 是否覆盖式部署
   ignoreHtmlExt: false # 是否是否忽略 html 扩展名，默认 false
@@ -96,7 +96,7 @@ inputs:
 | 参数名称           | 必选 | 类型            |     默认值     | 描述                                                                                      |
 | ------------------ | :--: | :-------------- | :------------: | :---------------------------------------------------------------------------------------- |
 | src                |  是  | [Src](#Src)[]   |                | 该项目的代码信息，参数参考执行目录                                                        |
-| bucketName         |  是  | string          |                | Bucket 名称。 不允许大写字母。如果你不加 AppId 后缀，则默认自动会为你加上。               |
+| bucket             |  是  | string          |                | Bucket 名称。 不允许大写字母。如果你不加 AppId 后缀，则默认自动会为你加上。               |
 | region             |  否  | string          | `ap-guangzhou` | 代码上传所在的 cos 区域。区。                                                             |
 | replace            |  否  | boolean         |    `false`     | 是否是替换式部署，如果为 `true`，部署时将 `先删除对应 bucket 的所有旧文件`。              |
 | protocol           |  否  | string          |    `https`     | 请求协议。`https` 或 `http`                                                               |

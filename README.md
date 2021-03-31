@@ -92,7 +92,7 @@ inputs:
     # hook: npm run build
     # websitePath: ./
   region: ap-guangzhou
-  bucketName: my-bucket
+  bucket: my-bucket
   protocol: https
 ```
 

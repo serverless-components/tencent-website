@@ -25,7 +25,7 @@ inputs:
     index: index.html
     error: index.html
   region: ap-guangzhou
-  bucketName: my-bucket
+  bucket: my-bucket
   protocol: https
   # 添加以下配置
   autoSetupAcl: false
