@@ -1,7 +1,7 @@
 app: appDemo
 stage: dev
 
-component: website@dev
+component: website
 name: websiteDemo
 
 inputs:
@@ -10,5 +10,5 @@ inputs:
     index: index.html
     error: index.html
   region: ap-guangzhou
-  bucket: website-demo-1303241281
+  bucket: website-demo
   protocol: https
