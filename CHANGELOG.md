@@ -1,3 +1,10 @@
+## [0.2.1](https://github.com/serverless-components/tencent-website/compare/v0.2.0...v0.2.1) (2021-04-26)
+
+
+### Bug Fixes
+
+* support tag config ([a391ff6](https://github.com/serverless-components/tencent-website/commit/a391ff6a37c0f29e9945ccb81a4f4bfe68c4d965))
+
 # [0.2.0](https://github.com/serverless-components/tencent-website/compare/v0.1.4...v0.2.0) (2021-03-31)
 
 
