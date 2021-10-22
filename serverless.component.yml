@@ -1,5 +1,5 @@
 name: website
-version: 0.2.3
+version: 0.2.4
 author: 'Tencent Cloud, Inc.'
 org: 'Tencent Cloud, Inc.'
 description: 静态网站组件，允许用户构建部署静态站点到腾讯 COS。适合用来构建部署静态网站。
