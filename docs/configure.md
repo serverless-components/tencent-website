@@ -301,7 +301,7 @@ HSTS 配置
 
 | 名称         | 必选 | 类型                                | 默认 | 描述                                                         |
 | :----------- | ---- | :---------------------------------- | :--- | :----------------------------------------------------------- |
-| RulePaths    | 是   | Array of string                     |      | CacheType 对应类型下的匹配内容： file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test path 时填充绝对路径，如 /xxx/test.html index 时填充 / |
+| RulePaths    | 是   | string[]                            |      | CacheType 对应类型下的匹配内容： file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test path 时填充绝对路径，如 /xxx/test.html index 时填充 / |
 | RuleType     | 是   | string                              |      | 规则类型： file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 index：首页 |
 | FullUrlCache | 是   | string                              |      | 是否开启全路径缓存 on：开启全路径缓存（即关闭参数忽略） off：关闭全路径缓存（即开启参数忽略） |
 | IgnoreCase   | 是   | string                              |      | 是否忽略大小写缓存                                           |
@@ -324,7 +324,7 @@ HSTS 配置
 
 | 名称        | 必选 | 类型                                                         | 默认 | 描述                 |
 | :---------- | ---- | :----------------------------------------------------------- | :--- | :------------------- |
-| SimpleCache | 否   | [SimpleCache](https://cloud.tencent.com/document/api/228/30987#SimpleCache) |      | 基础缓存过期时间配置 |
+| SimpleCache | 否   | [SimpleCache](#SimpleCache) |      | 基础缓存过期时间配置 |
 | RuleCache   | 否   | [RuleCache](#RuleCache)[]                                    |      | 高级路径缓存配置     |
 
 #### SimpleCache
@@ -335,10 +335,29 @@ HSTS 配置
 | :----------------- | ---- | :------------------------------------ | :--- | :----------------------------------------------------------- |
 | CacheRules         | 是   | [SimpleCacheRule](#SimpleCacheRule)[] |      | 缓存过期时间规则                                             |
 | FollowOrigin       | 是   | string                                |      | 遵循源站 Cache-Control: max-age 配置 on：开启 off：关闭      |
-| IgnoreCacheControl | 是   | string                                | off  | 强制缓存 on：开启 off：关闭，开启后，源站返回的 no-store、no-cache 资源，也将按照 CacheRules 规则进行缓存 |
-| IgnoreSetCookie    | 是   | string                                | off  | 忽略源站的Set-Cookie头部 on：开启 off：关闭                  |
-| CompareMaxAge      | 是   | string                                | off  | 高级缓存过期配置，开启时会对比源站返回的 max-age 值与 CacheRules 中设置的缓存过期时间，取最小值在节点进行缓存 on：开启 off：关闭 |
+| IgnoreCacheControl | 是   | string                                |      | 强制缓存 on：开启 off：关闭，开启后，源站返回的 no-store、no-cache 资源，也将按照 CacheRules 规则进行缓存 |
+| IgnoreSetCookie    | 是   | string                                |      | 忽略源站的Set-Cookie头部 on：开启 off：关闭                  |
+| CompareMaxAge      | 是   | string                                |      | 高级缓存过期配置，开启时会对比源站返回的 max-age 值与 CacheRules 中设置的缓存过期时间，取最小值在节点进行缓存 on：开启 off：关闭 |
 | Revalidate         | 否   | [Revalidate](#Revalidate)             |      | 总是回源站校验                                               |
+
+#### SimpleCacheRule
+
+缓存过期规则配置
+
+| 名称          | 必选 | 类型     | 默认 | 描述                                                         |
+| :------------ | ---- | :------- | :--- | :----------------------------------------------------------- |
+| CacheType     | 是   | string   |      | 规则类型： all：所有文件生效 file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 index：首页 |
+| CacheContents | 是   | string[] |      | CacheType 对应类型下的匹配内容： all 时填充 * file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test path 时填充绝对路径，如 /xxx/test.html index 时填充 / |
+| CacheTime     | 是   | number   |      | 缓存过期时间设置 单位为秒，最大可设置为 365 天               |
+
+#### Revalidate
+
+是否回源站校验
+
+| 名称   | 必选 | 类型   | 默认 | 描述                       |
+| :----- | ---- | :----- | :--- | :------------------------- |
+| Switch | 是   | String |      | on \| off 是否总是回源校验 |
+| Path   | 否   | String |      | 只在特定请求路径回源站校验 |
 
 #### RuleCache
 
@@ -349,6 +368,45 @@ HSTS 配置
 | RulePaths   | 是   | string[]                            |      | CacheType 对应类型下的匹配内容： all 时填充 * file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test path 时填充绝对路径，如 /xxx/test.html index 时填充 / |
 | RuleType    | 是   | string                              |      | 规则类型： all：所有文件生效 file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 index：首页 |
 | CacheConfig | 是   | [RuleCacheConfig](#RuleCacheConfig) |      | 缓存配置                                                     |
+
+#### RuleCacheConfig
+
+路径缓存缓存配置（三种缓存模式中选取一种）
+
+| 名称         | 必选 | 类型                                                | 默认 | 描述         |
+| :----------- | ---- | :-------------------------------------------------- | :--- | :----------- |
+| Cache        | 是   | [CacheConfigCache](#CacheConfigCache)               |      | 缓存配置     |
+| NoCache      | 是   | [CacheConfigNoCache](#CacheConfigNoCache)           |      | 不缓存配置   |
+| FollowOrigin | 是   | [CacheConfigFollowOrigin](#CacheConfigFollowOrigin) |      | 遵循源站配置 |
+
+#### CacheConfigCache
+
+路径缓存缓存配置
+
+| 名称               | 必选 | 类型   | 默认 | 描述                                                         |
+| :----------------- | ---- | :----- | :--- | :----------------------------------------------------------- |
+| Switch             | 是   | string |      | 缓存配置开关 on：开启 off：关闭                              |
+| CacheTime          | 是   | number |      | 缓存过期时间设置 单位为秒，最大可设置为 365 天               |
+| CompareMaxAge      | 是   | string |      | 高级缓存过期配置，开启时会对比源站返回的 max-age 值与 CacheRules 中设置的缓存过期时间，取最小值在节点进行缓存 on：开启 off：关闭 |
+| IgnoreCacheControl | 是   | string |      | 强制缓存 on：开启 off：关闭 默认为关闭状态，开启后，源站返回的 no-store、no-cache 资源，也将按照 CacheRules 规则进行缓存 |
+| IgnoreSetCookie    | 是   | string |      | 当源站返回Set-Cookie头部时，节点是否缓存该头部及body on：开启，不缓存该头部及body off：关闭，遵循用户自定义的节点缓存规则 |
+
+#### CacheConfigNoCache
+
+路径缓存不缓存配置
+
+| 名称       | 必选 | 类型   | 默认 | 描述                              |
+| :--------- | ---- | :----- | :--- | :-------------------------------- |
+| Switch     | 是   | string |      | 不缓存配置开关 on：开启 off：关闭 |
+| Revalidate | 是   | string |      | 总是回源站校验 on：开启 off：关闭 |
+
+#### CacheConfigFollowOrigin
+
+路径缓存遵循源站配置
+
+| 名称   | 必选 | 类型   | 默认 | 描述                                |
+| :----- | ---- | :----- | :--- | :---------------------------------- |
+| Switch | 是   | string |      | 遵循源站配置开关 on：开启 off：关闭 |
 
 #### Referer
 
