@@ -188,16 +188,16 @@ global：全球加速
 
 | 参数名称       | 必选 | 类型                      | 默认 | 描述                                                         |
 | -------------- | :--: | ------------------------- | ---- | ------------------------------------------------------------ |
-| Switch         |  是  | string                    |      | https 配置开关。on: 开启；off：关闭；此字段可能返回 null，表示取不到有效值 |
-| Http2          |  否  | string                    |      | http2 配置开关。on: 开启；off：关闭；初次启用 https 加速会默认开启 http2 配置 |
-| OcspStapling   |  否  | string                    | off  | OCSP 配置开关。on: 开启；off：关闭；此字段可能返回 null，表示取不到有效值 |
-| VerifyClient   |  否  | string                    | off  | 客户端证书校验功能。on: 开启；off：关闭；此字段可能返回 null，表示取不到有效值 |
-| CertInfo       |  否  | [ServerCert](#ServerCert) |      | 服务端证书配置信息                                           |
-| ClientCertInfo |  否  | [ClientCert](#ClientCert) |      | 客户端证书配置信息                                           |
-| Spdy           |  否  | string                    | off  | Spdy 配置开关。on: 开启；off：关闭                           |
-| SslStatus      |  否  | string                    |      | https 证书部署状态。closed：已关闭；deploying：部署中；deployed：部署成功；failed：部署失败 |
-| Hsts           |  否  | [Hsts](#Hsts)             |      | Hsts配置                                                     |
-| TlsVersion     |  否  | string[]                  |      | Tls版本设置，仅支持部分Advance域名，支持设置 TLSv1, TLSV1.1, TLSV1.2, TLSv1.3，修改时必须开启连续的版本 |
+| switch         |  是  | string                    |      | https 配置开关。on: 开启；off：关闭；此字段可能返回 null，表示取不到有效值 |
+| http2          |  否  | string                    |      | http2 配置开关。on: 开启；off：关闭；初次启用 https 加速会默认开启 http2 配置 |
+| ocspStapling   |  否  | string                    | off  | OCSP 配置开关。on: 开启；off：关闭；此字段可能返回 null，表示取不到有效值 |
+| verifyClient   |  否  | string                    | off  | 客户端证书校验功能。on: 开启；off：关闭；此字段可能返回 null，表示取不到有效值 |
+| certInfo       |  否  | [ServerCert](#ServerCert) |      | 服务端证书配置信息                                           |
+| clientCertInfo |  否  | [ClientCert](#ClientCert) |      | 客户端证书配置信息                                           |
+| spdy           |  否  | string                    | off  | Spdy 配置开关。on: 开启；off：关闭                           |
+| sslStatus      |  否  | string                    |      | https 证书部署状态。closed：已关闭；deploying：部署中；deployed：部署成功；failed：部署失败 |
+| hsts           |  否  | [Hsts](#Hsts)             |      | Hsts配置                                                     |
+| tlsVersion     |  否  | string[]                  |      | Tls版本设置，仅支持部分Advance域名，支持设置 TLSv1, TLSv1.1, TLSv1.2, TLSv1.3，修改时必须开启连续的版本 |
 
 #### ServerCert
 
@@ -205,13 +205,13 @@ https 加速服务端证书配置
 
 | 参数名称    | 必选 | 类型      | 默认 | 描述                                                    |
 | :---------- | ---- | :-------- | ---- | :------------------------------------------------------ |
-| CertId      | 否   | string    |      | 服务器证书 ID 在 SSL 证书管理进行证书托管时自动生成     |
-| CertName    | 否   | string    |      | 服务器证书名称 在 SSL 证书管理进行证书托管时自动生成    |
-| Certificate | 否   | string    |      | 服务器证书信息 上传自有证书时必填，需要包含完整的证书链 |
-| PrivateKey  | 否   | string    |      | 服务器密钥信息 上传自有证书时必填                       |
-| ExpireTime  | 否   | timestamp |      | 证书过期时间 作为入参配置时无需填充                     |
-| DeployTime  | 否   | timestamp |      | 证书颁发时间 作为入参配置时无需填充                     |
-| Message     | 否   | string    |      | 证书备注信息                                            |
+| certId      | 否   | string    |      | 服务器证书 ID 在 SSL 证书管理进行证书托管时自动生成     |
+| certName    | 否   | string    |      | 服务器证书名称 在 SSL 证书管理进行证书托管时自动生成    |
+| certificate | 否   | string    |      | 服务器证书信息 上传自有证书时必填，需要包含完整的证书链 |
+| privateKey  | 否   | string    |      | 服务器密钥信息 上传自有证书时必填                       |
+| expireTime  | 否   | timestamp |      | 证书过期时间 作为入参配置时无需填充                     |
+| deployTime  | 否   | timestamp |      | 证书颁发时间 作为入参配置时无需填充                     |
+| message     | 否   | string    |      | 证书备注信息                                            |
 
 #### ClientCert
 
@@ -219,10 +219,10 @@ https 客户端证书配置
 
 | 参数名称    | 必选 | 类型      | 默认 | 描述                                       |
 | :---------- | ---- | :-------- | ---- | :----------------------------------------- |
-| Certificate | 是   | string    |      | 客户端证书 PEM 格式，需要进行 Base 64 编码 |
-| CertName    | 否   | string    |      | 客户端证书名称                             |
-| ExpireTime  | 否   | timestamp |      | 证书过期时间 作为入参时无需填充            |
-| DeployTime  | 否   | timestamp |      | 证书颁发时间 作为入参时无需填充            |
+| certificate | 是   | string    |      | 客户端证书 PEM 格式，需要进行 Base 64 编码 |
+| certName    | 否   | string    |      | 客户端证书名称                             |
+| expireTime  | 否   | timestamp |      | 证书过期时间 作为入参时无需填充            |
+| deployTime  | 否   | timestamp |      | 证书颁发时间 作为入参时无需填充            |
 
 #### Hsts
 
@@ -230,9 +230,9 @@ HSTS 配置
 
 | 参数名称          | 必选 | 类型   | 默认 | 描述                    |
 | :---------------- | ---- | :----- | ---- | :---------------------- |
-| Switch            | 是   | string |      | 是否开启，on或off。     |
-| MaxAge            | 否   | number |      | MaxAge数值              |
-| IncludeSubDomains | 否   | string |      | 是否包含子域名，on或off |
+| switch            | 是   | string |      | 是否开启，on或off。     |
+| maxAge            | 否   | number |      | MaxAge数值              |
+| includeSubDomains | 否   | string |      | 是否包含子域名，on或off |
 
 #### CacheKey
 
@@ -240,14 +240,14 @@ HSTS 配置
 
 | 参数名称     | 必选 | 类型                              | 默认 | 描述                                                         |
 | :----------- | ---- | :-------------------------------- | ---- | :----------------------------------------------------------- |
-| FullUrlCache | 否   | string                            |      | 是否开启全路径缓存 on：开启全路径缓存（即关闭参数忽略） off：关闭全路径缓存（即开启参数忽略） |
-| IgnoreCase   | 否   | string                            |      | 是否忽略大小写缓存                                           |
-| Querystring  | 否   | [QuerystringKey](#QuerystringKey) |      | CacheKey中包含请求参数                                       |
-| Cookie       | 否   | [CookieKey](#CookieKey)           |      | CacheKey中包含Cookie                                         |
-| Header       | 否   | [HeaderKey](#HeaderKey)           |      | CacheKey中包含请求头部                                       |
-| CacheTag     | 否   | [CacheTagKey](#CacheTagKey)       |      | CacheKey中包含自定义字符串                                   |
-| Scheme       | 否   | [SchemeKey](#SchemeKey)           |      | CacheKey中包含请求协议                                       |
-| KeyRules     | 否   | [KeyRule](#KeyRule)[]             |      | 分路径缓存键配置                                             |
+| fullUrlCache | 否   | string                            |      | 是否开启全路径缓存 on：开启全路径缓存（即关闭参数忽略） off：关闭全路径缓存（即开启参数忽略） |
+| ignoreCase   | 否   | string                            |      | 是否忽略大小写缓存                                           |
+| querystring  | 否   | [QuerystringKey](#QuerystringKey) |      | CacheKey中包含请求参数                                       |
+| cookie       | 否   | [CookieKey](#CookieKey)           |      | CacheKey中包含Cookie                                         |
+| header       | 否   | [HeaderKey](#HeaderKey)           |      | CacheKey中包含请求头部                                       |
+| cacheTag     | 否   | [CacheTagKey](#CacheTagKey)       |      | CacheKey中包含自定义字符串                                   |
+| scheme       | 否   | [SchemeKey](#SchemeKey)           |      | CacheKey中包含请求协议                                       |
+| keyRules     | 否   | [KeyRule](#KeyRule)[]             |      | 分路径缓存键配置                                             |
 
 #### QuerystringKey
 
@@ -255,10 +255,10 @@ HSTS 配置
 
 | 名称    | 必选 | 类型   | 默认 | 描述                                                         |
 | :------ | ---- | :----- | :--- | :----------------------------------------------------------- |
-| Switch  | 是   | string |      | on \| off CacheKey是否由Querystring组成                      |
-| Reorder | 否   | string |      | 是否重新排序                                                 |
-| Action  | 否   | string |      | includeAll \| excludeAll \| includeCustom \| excludeAll 使用/排除部分url参数 |
-| Value   | 否   | string |      | 使用/排除的url参数数组，';' 分割                             |
+| switch  | 是   | string |      | on \| off CacheKey是否由Querystring组成                      |
+| reorder | 否   | string |      | 是否重新排序                                                 |
+| action  | 否   | string |      | includeAll \| excludeAll \| includeCustom \| excludeAll 使用/排除部分url参数 |
+| value   | 否   | string |      | 使用/排除的url参数数组，';' 分割                             |
 
 #### CookieKey
 
@@ -266,8 +266,8 @@ HSTS 配置
 
 | 名称   | 必选 | 类型   | 默认 | 描述                                      |
 | :----- | ---- | :----- | :--- | :---------------------------------------- |
-| Switch | 是   | string |      | on \| off 是否使用Cookie作为Cache的一部分 |
-| Value  | 否   | string |      | 使用的cookie，';' 分割                    |
+| switch | 是   | string |      | on \| off 是否使用Cookie作为Cache的一部分 |
+| value  | 否   | string |      | 使用的cookie，';' 分割                    |
 
 #### HeaderKey
 
@@ -275,8 +275,8 @@ HSTS 配置
 
 | 名称   | 必选 | 类型   | 默认 | 描述                               |
 | :----- | ---- | :----- | :--- | :--------------------------------- |
-| Switch | 否   | string |      | 是否组成Cachekey                   |
-| Value  | 否   | string |      | 组成CacheKey的header数组，';' 分割 |
+| switch | 否   | string |      | 是否组成Cachekey                   |
+| value  | 否   | string |      | 组成CacheKey的header数组，';' 分割 |
 
 #### CacheTagKey
 
@@ -284,8 +284,8 @@ HSTS 配置
 
 | 名称   | 必选 | 类型   | 默认 | 描述                                 |
 | :----- | ---- | :----- | :--- | :----------------------------------- |
-| Switch | 是   | string |      | 是否使用CacheTag作为CacheKey的一部分 |
-| Value  | 否   | string |      | 自定义CacheTag的值                   |
+| switch | 是   | string |      | 是否使用CacheTag作为CacheKey的一部分 |
+| value  | 否   | string |      | 自定义CacheTag的值                   |
 
 #### SchemeKey
 
@@ -293,7 +293,7 @@ HSTS 配置
 
 | 名称   | 必选 | 类型   | 默认 | 描述                                          |
 | :----- | ---- | :----- | :--- | :-------------------------------------------- |
-| Switch | 是   | string |      | on \| off 是否使用scheme作为cache key的一部分 |
+| switch | 是   | string |      | on \| off 是否使用scheme作为cache key的一部分 |
 
 #### KeyRule
 
@@ -301,12 +301,12 @@ HSTS 配置
 
 | 名称         | 必选 | 类型                                | 默认 | 描述                                                         |
 | :----------- | ---- | :---------------------------------- | :--- | :----------------------------------------------------------- |
-| RulePaths    | 是   | string[]                            |      | CacheType 对应类型下的匹配内容： file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test path 时填充绝对路径，如 /xxx/test.html index 时填充 / |
-| RuleType     | 是   | string                              |      | 规则类型： file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 index：首页 |
-| FullUrlCache | 是   | string                              |      | 是否开启全路径缓存 on：开启全路径缓存（即关闭参数忽略） off：关闭全路径缓存（即开启参数忽略） |
-| IgnoreCase   | 是   | string                              |      | 是否忽略大小写缓存                                           |
-| Querystring  | 是   | [RuleQuerystring](#RuleQuerystring) |      | CacheKey中包含请求参数                                       |
-| RuleTag      | 是   | string                              |      | 路径缓存键标签，传 user                                      |
+| rulePaths    | 是   | string[]                            |      | CacheType 对应类型下的匹配内容： file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test path 时填充绝对路径，如 /xxx/test.html index 时填充 / |
+| ruleType     | 是   | string                              |      | 规则类型： file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 index：首页 |
+| fullUrlCache | 是   | string                              |      | 是否开启全路径缓存 on：开启全路径缓存（即关闭参数忽略） off：关闭全路径缓存（即开启参数忽略） |
+| ignoreCase   | 是   | string                              |      | 是否忽略大小写缓存                                           |
+| querystring  | 是   | [RuleQuerystring](#RuleQuerystring) |      | CacheKey中包含请求参数                                       |
+| ruleTag      | 是   | string                              |      | 路径缓存键标签，传 user                                      |
 
 #### RuleQuerystring
 
@@ -314,9 +314,9 @@ HSTS 配置
 
 | 名称   | 必选 | 类型   | 默认 | 描述                                    |
 | :----- | ---- | :----- | :--- | :-------------------------------------- |
-| Switch | 是   | string |      | on \| off CacheKey是否由Querystring组成 |
-| Action | 是   | string |      | includeCustom 包含部分url参数           |
-| Value  | 是   | string |      | 使用/排除的url参数数组，';' 分割        |
+| switch | 是   | string |      | on \| off CacheKey是否由Querystring组成 |
+| action | 是   | string |      | includeCustom 包含部分url参数           |
+| value  | 是   | string |      | 使用/排除的url参数数组，';' 分割        |
 
 #### Cache
 
@@ -324,8 +324,8 @@ HSTS 配置
 
 | 名称        | 必选 | 类型                                                         | 默认 | 描述                 |
 | :---------- | ---- | :----------------------------------------------------------- | :--- | :------------------- |
-| SimpleCache | 否   | [SimpleCache](#SimpleCache) |      | 基础缓存过期时间配置 |
-| RuleCache   | 否   | [RuleCache](#RuleCache)[]                                    |      | 高级路径缓存配置     |
+| simpleCache | 否   | [SimpleCache](#SimpleCache) |      | 基础缓存过期时间配置 |
+| ruleCache   | 否   | [RuleCache](#RuleCache)[]                                    |      | 高级路径缓存配置     |
 
 #### SimpleCache
 
@@ -333,12 +333,12 @@ HSTS 配置
 
 | 名称               | 必选 | 类型                                  | 默认 | 描述                                                         |
 | :----------------- | ---- | :------------------------------------ | :--- | :----------------------------------------------------------- |
-| CacheRules         | 是   | [SimpleCacheRule](#SimpleCacheRule)[] |      | 缓存过期时间规则                                             |
-| FollowOrigin       | 是   | string                                |      | 遵循源站 Cache-Control: max-age 配置 on：开启 off：关闭      |
-| IgnoreCacheControl | 是   | string                                |      | 强制缓存 on：开启 off：关闭，开启后，源站返回的 no-store、no-cache 资源，也将按照 CacheRules 规则进行缓存 |
-| IgnoreSetCookie    | 是   | string                                |      | 忽略源站的Set-Cookie头部 on：开启 off：关闭                  |
-| CompareMaxAge      | 是   | string                                |      | 高级缓存过期配置，开启时会对比源站返回的 max-age 值与 CacheRules 中设置的缓存过期时间，取最小值在节点进行缓存 on：开启 off：关闭 |
-| Revalidate         | 否   | [Revalidate](#Revalidate)             |      | 总是回源站校验                                               |
+| cacheRules         | 是   | [SimpleCacheRule](#SimpleCacheRule)[] |      | 缓存过期时间规则                                             |
+| followOrigin       | 是   | string                                |      | 遵循源站 Cache-Control: max-age 配置 on：开启 off：关闭      |
+| ignoreCacheControl | 是   | string                                |      | 强制缓存 on：开启 off：关闭，开启后，源站返回的 no-store、no-cache 资源，也将按照 CacheRules 规则进行缓存 |
+| ignoreSetCookie    | 是   | string                                |      | 忽略源站的Set-Cookie头部 on：开启 off：关闭                  |
+| compareMaxAge      | 是   | string                                |      | 高级缓存过期配置，开启时会对比源站返回的 max-age 值与 CacheRules 中设置的缓存过期时间，取最小值在节点进行缓存 on：开启 off：关闭 |
+| revalidate         | 否   | [Revalidate](#Revalidate)             |      | 总是回源站校验                                               |
 
 #### SimpleCacheRule
 
@@ -346,9 +346,9 @@ HSTS 配置
 
 | 名称          | 必选 | 类型     | 默认 | 描述                                                         |
 | :------------ | ---- | :------- | :--- | :----------------------------------------------------------- |
-| CacheType     | 是   | string   |      | 规则类型： all：所有文件生效 file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 index：首页 |
-| CacheContents | 是   | string[] |      | CacheType 对应类型下的匹配内容： all 时填充 * file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test path 时填充绝对路径，如 /xxx/test.html index 时填充 / |
-| CacheTime     | 是   | number   |      | 缓存过期时间设置 单位为秒，最大可设置为 365 天               |
+| cacheType     | 是   | string   |      | 规则类型： all：所有文件生效 file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 index：首页 |
+| cacheContents | 是   | string[] |      | CacheType 对应类型下的匹配内容： all 时填充 * file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test path 时填充绝对路径，如 /xxx/test.html index 时填充 / |
+| cacheTime     | 是   | number   |      | 缓存过期时间设置 单位为秒，最大可设置为 365 天               |
 
 #### Revalidate
 
@@ -356,8 +356,8 @@ HSTS 配置
 
 | 名称   | 必选 | 类型   | 默认 | 描述                       |
 | :----- | ---- | :----- | :--- | :------------------------- |
-| Switch | 是   | String |      | on \| off 是否总是回源校验 |
-| Path   | 否   | String |      | 只在特定请求路径回源站校验 |
+| switch | 是   | String |      | on \| off 是否总是回源校验 |
+| path   | 否   | String |      | 只在特定请求路径回源站校验 |
 
 #### RuleCache
 
@@ -365,9 +365,9 @@ HSTS 配置
 
 | 名称        | 必选 | 类型                                | 默认 | 描述                                                         |
 | :---------- | ---- | :---------------------------------- | :--- | :----------------------------------------------------------- |
-| RulePaths   | 是   | string[]                            |      | CacheType 对应类型下的匹配内容： all 时填充 * file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test path 时填充绝对路径，如 /xxx/test.html index 时填充 / |
-| RuleType    | 是   | string                              |      | 规则类型： all：所有文件生效 file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 index：首页 |
-| CacheConfig | 是   | [RuleCacheConfig](#RuleCacheConfig) |      | 缓存配置                                                     |
+| rulePaths   | 是   | string[]                            |      | CacheType 对应类型下的匹配内容： all 时填充 * file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test path 时填充绝对路径，如 /xxx/test.html index 时填充 / |
+| ruleType    | 是   | string                              |      | 规则类型： all：所有文件生效 file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 index：首页 |
+| cacheConfig | 是   | [RuleCacheConfig](#RuleCacheConfig) |      | 缓存配置                                                     |
 
 #### RuleCacheConfig
 
@@ -375,9 +375,9 @@ HSTS 配置
 
 | 名称         | 必选 | 类型                                                | 默认 | 描述         |
 | :----------- | ---- | :-------------------------------------------------- | :--- | :----------- |
-| Cache        | 是   | [CacheConfigCache](#CacheConfigCache)               |      | 缓存配置     |
-| NoCache      | 是   | [CacheConfigNoCache](#CacheConfigNoCache)           |      | 不缓存配置   |
-| FollowOrigin | 是   | [CacheConfigFollowOrigin](#CacheConfigFollowOrigin) |      | 遵循源站配置 |
+| cache        | 是   | [CacheConfigCache](#CacheConfigCache)               |      | 缓存配置     |
+| noCache      | 是   | [CacheConfigNoCache](#CacheConfigNoCache)           |      | 不缓存配置   |
+| followOrigin | 是   | [CacheConfigFollowOrigin](#CacheConfigFollowOrigin) |      | 遵循源站配置 |
 
 #### CacheConfigCache
 
@@ -385,11 +385,11 @@ HSTS 配置
 
 | 名称               | 必选 | 类型   | 默认 | 描述                                                         |
 | :----------------- | ---- | :----- | :--- | :----------------------------------------------------------- |
-| Switch             | 是   | string |      | 缓存配置开关 on：开启 off：关闭                              |
-| CacheTime          | 是   | number |      | 缓存过期时间设置 单位为秒，最大可设置为 365 天               |
-| CompareMaxAge      | 是   | string |      | 高级缓存过期配置，开启时会对比源站返回的 max-age 值与 CacheRules 中设置的缓存过期时间，取最小值在节点进行缓存 on：开启 off：关闭 |
-| IgnoreCacheControl | 是   | string |      | 强制缓存 on：开启 off：关闭 默认为关闭状态，开启后，源站返回的 no-store、no-cache 资源，也将按照 CacheRules 规则进行缓存 |
-| IgnoreSetCookie    | 是   | string |      | 当源站返回Set-Cookie头部时，节点是否缓存该头部及body on：开启，不缓存该头部及body off：关闭，遵循用户自定义的节点缓存规则 |
+| switch             | 是   | string |      | 缓存配置开关 on：开启 off：关闭                              |
+| cacheTime          | 是   | number |      | 缓存过期时间设置 单位为秒，最大可设置为 365 天               |
+| compareMaxAge      | 是   | string |      | 高级缓存过期配置，开启时会对比源站返回的 max-age 值与 CacheRules 中设置的缓存过期时间，取最小值在节点进行缓存 on：开启 off：关闭 |
+| ignoreCacheControl | 是   | string |      | 强制缓存 on：开启 off：关闭 默认为关闭状态，开启后，源站返回的 no-store、no-cache 资源，也将按照 CacheRules 规则进行缓存 |
+| ignoreSetCookie    | 是   | string |      | 当源站返回Set-Cookie头部时，节点是否缓存该头部及body on：开启，不缓存该头部及body off：关闭，遵循用户自定义的节点缓存规则 |
 
 #### CacheConfigNoCache
 
@@ -397,8 +397,8 @@ HSTS 配置
 
 | 名称       | 必选 | 类型   | 默认 | 描述                              |
 | :--------- | ---- | :----- | :--- | :-------------------------------- |
-| Switch     | 是   | string |      | 不缓存配置开关 on：开启 off：关闭 |
-| Revalidate | 是   | string |      | 总是回源站校验 on：开启 off：关闭 |
+| switch     | 是   | string |      | 不缓存配置开关 on：开启 off：关闭 |
+| revalidate | 是   | string |      | 总是回源站校验 on：开启 off：关闭 |
 
 #### CacheConfigFollowOrigin
 
@@ -406,7 +406,7 @@ HSTS 配置
 
 | 名称   | 必选 | 类型   | 默认 | 描述                                |
 | :----- | ---- | :----- | :--- | :---------------------------------- |
-| Switch | 是   | string |      | 遵循源站配置开关 on：开启 off：关闭 |
+| switch | 是   | string |      | 遵循源站配置开关 on：开启 off：关闭 |
 
 #### Referer
 
@@ -414,8 +414,8 @@ Referer 黑白名单配置，默认为关闭状态
 
 | 名称         | 必选 | 类型                          | 默认 | 描述                                        |
 | :----------- | ---- | :---------------------------- | :--- | :------------------------------------------ |
-| Switch       | 是   | string                        |      | referer 黑白名单配置开关 on：开启 off：关闭 |
-| RefererRules | 否   | [RefererRule](#RefererRule)[] |      | referer 黑白名单配置规则                    |
+| switch       | 是   | string                        |      | referer 黑白名单配置开关 on：开启 off：关闭 |
+| refererRules | 否   | [RefererRule](#RefererRule)[] |      | referer 黑白名单配置规则                    |
 
 #### RefererRule
 
@@ -423,11 +423,11 @@ Referer 黑白名单配置规则，针对特定资源生效
 
 | 名称        | 必选 | 类型     | 默认 | 描述                                                         |
 | :---------- | ---- | :------- | :--- | :----------------------------------------------------------- |
-| RuleType    | 是   | string   |      | 规则类型： all：所有文件生效 file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 |
-| RulePaths   | 是   | string[] |      | RuleType 对应类型下的匹配内容： all 时填充 * file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test/ path 时填充绝对路径，如 /xxx/test.html |
-| RefererType | 是   | string   |      | referer 配置类型 whitelist：白名单 blacklist：黑名单         |
-| Referers    | 是   | string[] |      | referer 内容列表列表                                         |
-| AllowEmpty  | 是   | Boolean  |      | 是否允许空 referer true：允许空 referer false：不允许空 referer |
+| ruleType    | 是   | string   |      | 规则类型： all：所有文件生效 file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 |
+| rulePaths   | 是   | string[] |      | RuleType 对应类型下的匹配内容： all 时填充 * file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test/ path 时填充绝对路径，如 /xxx/test.html |
+| refererType | 是   | string   |      | referer 配置类型 whitelist：白名单 blacklist：黑名单         |
+| referers    | 是   | string[] |      | referer 内容列表列表                                         |
+| allowEmpty  | 是   | Boolean  |      | 是否允许空 referer true：允许空 referer false：不允许空 referer |
 
 #### IpFilter
 
@@ -435,11 +435,11 @@ IP 黑白名单配置，默认为关闭状态
 
 | 名称        | 必选 | 类型                                    | 默认 | 描述                                                         |
 | :---------- | ---- | :-------------------------------------- | :--- | :----------------------------------------------------------- |
-| Switch      | 是   | string                                  |      | IP 黑白名单配置开关 on：开启 off：关闭                       |
-| FilterType  | 否   | string                                  |      | IP 黑白名单类型 whitelist：白名单 blacklist：黑名单          |
-| Filters     | 否   | string[]                                |      | IP 黑白名单列表 支持 X.X.X.X 形式 IP，或 /8、 /16、/24 形式网段 最多可填充 50 个白名单或 50 个黑名单 |
-| FilterRules | 否   | [IpFilterPathRule](#IpFilterPathRule)[] |      | IP 黑白名单分路径配置，白名单功能                            |
-| ReturnCode  | 否   | number                                  |      | IP 黑白名单验证失败时返回的 HTTP Code 合法值: 400~499        |
+| switch      | 是   | string                                  |      | IP 黑白名单配置开关 on：开启 off：关闭                       |
+| filterType  | 否   | string                                  |      | IP 黑白名单类型 whitelist：白名单 blacklist：黑名单          |
+| filters     | 否   | string[]                                |      | IP 黑白名单列表 支持 X.X.X.X 形式 IP，或 /8、 /16、/24 形式网段 最多可填充 50 个白名单或 50 个黑名单 |
+| filterRules | 否   | [IpFilterPathRule](#IpFilterPathRule)[] |      | IP 黑白名单分路径配置，白名单功能                            |
+| returnCode  | 否   | number                                  |      | IP 黑白名单验证失败时返回的 HTTP Code 合法值: 400~499        |
 
 #### IpFilterPathRule
 
@@ -447,10 +447,10 @@ IP黑白名单分路径配置
 
 | 名称       | 必选 | 类型     | 默认 | 描述                                                         |
 | :--------- | ---- | :------- | :--- | :----------------------------------------------------------- |
-| FilterType | 是   | string   |      | IP 黑白名单类型 whitelist：白名单 blacklist：黑名单          |
-| Filters    | 是   | string[] |      | IP 黑白名单列表 支持 X.X.X.X 形式 IP，或 /8、 /16、/24 形式网段 最多可填充 50 个白名单或 50 个黑名单 |
-| RuleType   | 是   | string   |      | 规则类型： all：所有文件生效 file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 |
-| RulePaths  | 是   | string[] |      | RuleType 对应类型下的匹配内容： all 时填充 * file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test/ path 时填充绝对路径，如 /xxx/test.html |
+| filterType | 是   | string   |      | IP 黑白名单类型 whitelist：白名单 blacklist：黑名单          |
+| filters    | 是   | string[] |      | IP 黑白名单列表 支持 X.X.X.X 形式 IP，或 /8、 /16、/24 形式网段 最多可填充 50 个白名单或 50 个黑名单 |
+| ruleType   | 是   | string   |      | 规则类型： all：所有文件生效 file：指定文件后缀生效 directory：指定路径生效 path：指定绝对路径生效 |
+| rulePaths  | 是   | string[] |      | RuleType 对应类型下的匹配内容： all 时填充 * file 时填充后缀名，如 jpg、txt directory 时填充路径，如 /xxx/test/ path 时填充绝对路径，如 /xxx/test.html |
 
 ### Env
 
