@@ -1,3 +1,10 @@
+## [0.2.4](https://github.com/serverless-components/tencent-website/compare/v0.2.3...v0.2.4) (2022-03-18)
+
+
+### Bug Fixes
+
+* 修改文件过多上传失败 ([#46](https://github.com/serverless-components/tencent-website/issues/46)) ([6fa6d0b](https://github.com/serverless-components/tencent-website/commit/6fa6d0bc17242f8eaff6153696302bf46e7ad3a7))
+
 ## [0.2.2](https://github.com/serverless-components/tencent-website/compare/v0.2.1...v0.2.2) (2021-07-29)
 
 
